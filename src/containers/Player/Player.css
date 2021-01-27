@@ -1,0 +1,66 @@
+.Player {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #FFA17F, #00223E);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  color: #000000;
+  align-items: center;
+}
+.Player-stats-container {
+  margin-top: 30px;
+}
+.Player-stats-metric {
+  padding: 15px;
+  background-color: #fff;
+  text-align: center;
+}
+.Player-stats-metric thead td {
+  cursor: help;
+}
+.Player-stats-metric td {
+  padding: 4px 6px;
+  border: 1px solid #cccccc;
+  text-transform: uppercase;
+}
+.Player-stats-shoot {
+  padding: 15px;
+  background-color: #fff;
+  text-align: center;
+  margin-top: 30px;
+}
+.Player-stats-shoot td {
+  padding: 4px 6px;
+  border: 1px solid #cccccc;
+  text-transform: uppercase;
+}
+.Player-number {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+}
+.Player-team {
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 30px;
+  border-radius: 5px;
+}
+.Player-team-img-wrap {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  margin: 20px 0;
+}
+.Player-team-img-wrap img {
+  width: 100%;
+  height: 100%;
+}
+
+/*# sourceMappingURL=Player.css.map */
