@@ -1,0 +1,39 @@
+.TeamList {
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  border-radius: 8px;
+}
+.TeamList button {
+  width: 50%;
+}
+.TeamList-ul {
+  width: 100%;
+  font-size: 1.2rem;
+  list-style: none;
+  padding: 0 15px;
+  margin-bottom: 25px;
+}
+.TeamList-ul li {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 3px;
+  border-bottom: 1px solid #cccccc;
+}
+.TeamList-ul li:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: black;
+}
+.TeamList-ul li .flex {
+  display: flex;
+}
+.TeamList-ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/*# sourceMappingURL=TeamList.css.map */
