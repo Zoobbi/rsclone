@@ -1,0 +1,39 @@
+.CreateLeague {
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 500px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  padding: 25px 20px;
+  color: white;
+  border-radius: 20px 20px 0 0;
+}
+.CreateLeague-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ff4e00;
+  background-image: linear-gradient(315deg, #ff4e00 0%, #ec9f05 74%);
+}
+.CreateLeague-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+}
+.CreateLeague-logo img {
+  width: 30px;
+  height: 30px;
+}
+.CreateLeague-logo span {
+  margin-left: 20px;
+}
+.CreateLeague-logo .none {
+  display: none;
+}
+
+.preview-img {
+  width: 50px;
+}
+
+/*# sourceMappingURL=CreateLeague.css.map */
