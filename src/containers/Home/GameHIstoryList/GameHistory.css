@@ -1,0 +1,36 @@
+.GameHistoryAll {
+  margin-top: 40px;
+  width: 90%;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  color: white;
+  padding: 30px 15px;
+}
+.GameHistoryAll h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+.GameHistoryAll-list {
+  list-style: none;
+}
+.GameHistoryAll-item {
+  display: flex;
+  padding: 5px 0;
+  justify-content: space-between;
+  border-bottom: 1px solid #cccccc;
+}
+.GameHistoryAll-item a {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 15px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.5s;
+}
+.GameHistoryAll-item a:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+  color: black;
+}
+
+/*# sourceMappingURL=GameHistory.css.map */
