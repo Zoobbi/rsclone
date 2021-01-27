@@ -1,0 +1,73 @@
+.button.error {
+  background: crimson;
+}
+
+.button.success {
+  background: green;
+  font-size: 1rem;
+}
+
+.button.primary {
+  background: blue;
+  font-size: 1rem;
+}
+
+.button.changeAuthMode {
+  background: #FA6502;
+  outline: transparent;
+  font-size: 1rem;
+}
+.button.changeAuthMode:hover {
+  background: transparent;
+  border-color: #FA6502;
+  font-size: 1rem;
+}
+
+.button.register {
+  background: transparent;
+  border-color: #FA6502;
+  font-size: 1rem;
+}
+.button.register:hover {
+  transform: scale(1.06);
+}
+
+.button.register-black {
+  background-color: rgba(0, 0, 0, 0.7);
+  border-color: #FA6502;
+  font-size: 1rem;
+}
+.button.register-black:hover {
+  transform: scale(1.06);
+}
+
+.button {
+  letter-spacing: 1px;
+  border: 1px solid transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.7s;
+  border-radius: 10px;
+  padding: 8px 15px;
+  box-sizing: border-box;
+}
+.button a {
+  color: #fff;
+  text-decoration: none;
+}
+.button:active {
+  box-shadow: inset 2px 2px 1px rgba(0, 0, 0, 0.3);
+}
+.button:disabled {
+  background: #ccc;
+  color: #000;
+  cursor: not-allowed;
+  border-color: transparent;
+}
+.button:disabled:hover {
+  background: #ccc;
+  transform: scale(1);
+  border-color: transparent;
+}
+
+/*# sourceMappingURL=Button.css.map */
