@@ -1,0 +1,26 @@
+.InfoModal {
+  width: 200px;
+  height: 50px;
+  background-color: #ffffff;
+  position: fixed;
+  font-size: 1rem;
+  top: 15%;
+  right: -200px;
+  display: flex;
+  letter-spacing: 0.5px;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #19FF24;
+  box-sizing: border-box;
+  border-radius: 7px 0 0 7px;
+  transition: .5s;
+}
+.InfoModal.visible {
+  right: 0;
+}
+.InfoModal.success {
+  border-color: #19FF24;
+}
+.InfoModal.error {
+  border-color: red;
+}
