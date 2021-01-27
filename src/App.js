@@ -9,7 +9,7 @@ import HomeWrapper from './containers/Home/HomeWrapper/HomeWrapper';
 import './App.scss';
 import { token } from './utils/redux/actions';
 import CreateLeague from './containers/components/CreateForms/Leagues/CreateLeague';
-import { getUserToken } from './utils/Cookie/cookie';
+import { getUser, getUserToken } from './utils/Cookie/cookie';
 import CreateTeam from './containers/components/CreateForms/Teams/CreateTeams';
 import League from './containers/League/League';
 import CreatePlayer from './containers/components/CreateForms/Players/CreatePlayers';
@@ -72,7 +72,7 @@ class App extends Component {
                          <Route path="/players/detals" exact component={Player} />
                          <Route path="/player_patch/detals" exact component={PatchPlayer} />
                          <Route path="/user" exact component={UserProfile} />
-                         <Route path="/game" exact component={GameWrapper} />
+                         {getUser().isAdmin ? <Route path="/game" exact component={GameWrapper} /> : null}
                          <Route path="/game/start" exact component={StartPlayers} />
                          <Route path="/games/detals" exact component={GameHistory} />
                          <Route path="/" exact component={HomeWrapper} />

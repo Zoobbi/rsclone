@@ -49,6 +49,7 @@ class TopList extends Component {
     const topPlayers = players.slice(0, 5);
     const { category } = this.state;
 
+    console.log(topPlayers);
     const result = topPlayers.map((player) => (
       <tr
         key={player._id + index}

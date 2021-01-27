@@ -1,0 +1,41 @@
+.NoPage {
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+  -webkit-background-size: cover;
+  background-size: cover;
+  background-position: 50% 0;
+  &-content {
+    background-color: rgba(0,0,0, .7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    color: white;
+    border-radius: 10px;
+    a {
+      color: white;
+      display: inline-flex;
+      margin-top: 20px;
+      text-decoration: none;
+      padding: 7px 15px;
+      border: 1px solid #fff;
+      transition: .6s;
+      &:hover{
+        background-color: #fff;
+        border: 1px solid #000;
+        color: black;
+      }
+    }
+    .err404 {
+      font-size: 3.5rem;
+    }
+    .description {
+      font-size: 1.5rem;
+    }
+  }
+}

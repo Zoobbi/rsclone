@@ -4,13 +4,18 @@ import './Drawer.scss';
 import propTypes from 'prop-types';
 import Backdrop from '../../UI/Backdrop/Backdrop';
 import RSschool from '../../UI/RSschool/RSschool';
+import Zoobbi from '../../UI/Zoobbi/Zoobbi';
+import { getUser } from '../../../../utils/Cookie/cookie';
 
 const links = [
   { to: '/', label: 'Главная', exact: true },
   { to: '/auth', label: 'Авторизация', exact: false },
-  { to: '/game', label: 'Игра', exact: false },
   { to: '/user', label: 'Пользователь', exact: false },
 ];
+
+if (getUser().isAdmin) {
+  links.push({ to: '/game', label: 'Игра', exact: false });
+}
 
 class Drawer extends Component {
     clickHandler = () => {
@@ -43,9 +48,12 @@ class Drawer extends Component {
             <ul>
               { this.renderLinks()}
             </ul>
+            <div>
+              <Zoobbi />
+              <RSschool />
+            </div>
           </nav>
           {this.props.isOpen ? <Backdrop onClick={this.props.onClose} /> : null}
-          <RSschool />
         </>
 
       );

@@ -41,7 +41,7 @@ render() {
             &quot;
           </span>
         </h1>
-        <div className="center">
+        <div className="media-column center">
           <TeamList
             league_id={
                   this.props.currentLeague.currentLeague._id

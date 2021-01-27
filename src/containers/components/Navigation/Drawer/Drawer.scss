@@ -1,5 +1,9 @@
 .Drawer {
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   left: 0;
   top: 0;
   bottom: 0;
@@ -7,7 +11,7 @@
   max-width: 300px;
   padding: 20px 10px;
   box-sizing: border-box;
-  background: #fff;
+  background: #FE860C;
   z-index: 90;
   transform: translateX(0px);
   transition: .3s ease-in;
@@ -19,15 +23,17 @@
     li {
       margin-bottom: 15px;
       a {
-        color: #363d54;
+        display: block;
+        color: #fff;
         font-size: 30px;
         text-decoration: none;
-        background-color: #fff;
         position: relative;
         padding: 0 20px 10px 20px;
         transition: .3s;
+        border-bottom: 1px solid #fff;
         &:hover {
-          opacity: .7;
+          background-color: rgba(0,0,0, .2);
+          transform: translate(20px);
         }
         &:active {
           opacity: .7;

@@ -17,12 +17,10 @@ class GameHistory extends Component {
     if (this.props.league_id !== prevProps.league_id) {
       this.props.fetchGamesFromDB(this.props.league_id);
     }
-    console.log(this.props.games, this.props.teams);
   }
 
   showGamesList = () => this.props.games.games.map((game) => {
     const date = new Date(game.date);
-    console.log(date);
     return (
       <li key={game._id + Math.random()} className="GameHistoryAll-item">
         <Link to={`/games/detals?game_id=${game._id}`}>
@@ -67,16 +65,13 @@ GameHistory.defaultProps = {
   league_id: undefined,
   fetchGamesFromDB: 'null',
   games: [],
-  teams: [],
 };
 
 GameHistory.propTypes = {
   league_id: propTypes.string,
   fetchGamesFromDB: propTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
-  games: propTypes.array,
-  // eslint-disable-next-line react/forbid-prop-types
-  teams: propTypes.array,
+  games: propTypes.object,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameHistory);

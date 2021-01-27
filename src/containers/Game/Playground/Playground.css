@@ -1,0 +1,10 @@
+.sector {
+  transition: 0.3s;
+  opacity: 0;
+}
+.sector:hover {
+  fill: #fff;
+  opacity: 0.5;
+}
+
+/*# sourceMappingURL=Playground.css.map */

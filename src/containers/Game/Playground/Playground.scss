@@ -1,0 +1,8 @@
+.sector {
+  transition: .3s;
+  opacity: 0;
+  &:hover {
+    fill: #fff;
+    opacity: 0.5
+  }
+}

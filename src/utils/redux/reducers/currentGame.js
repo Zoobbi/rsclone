@@ -27,7 +27,6 @@ export const loadGameFromDB = (id) => async (dispatch) => {
     await axios.get(`${localhost}games/${id}`,
       { headers: { Authorization: ` ${store.getState().token.token}` } })
       .then((data) => {
-        console.log(data);
         dispatch(getCurrentGame(data.data));
       });
   } catch (e) {

@@ -1,0 +1,21 @@
+.Timer-time {
+  display: flex;
+}
+.Timer-time input {
+  background-color: rosybrown;
+  border: none;
+  outline: none;
+  width: 80px;
+  font-size: 2rem;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  padding-left: 15px;
+  align-items: center;
+}
+.Timer-content {
+  display: flex;
+  background-color: #fff;
+}
+
+/*# sourceMappingURL=Timer.css.map */

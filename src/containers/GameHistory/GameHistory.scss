@@ -1,0 +1,57 @@
+.GameHistory {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(360deg, #ef32d9,#89fffd);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffffff;
+  &-content {
+    background-color: rgba(0,0,0, .7);
+    padding: 30px;
+    border-radius: 10px;
+    h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+  };
+ table {
+   width: 100%;
+   border-collapse: collapse;
+   margin-bottom: 50px;
+   td {
+     padding: 4px 2px;
+     border: 1px solid rgba(255,255,255, .7);
+     a {
+       width: 100%;
+       height: 100%;
+       color: white;
+       display: block;
+       position: relative;
+       padding-left: 10px;
+       padding-right: 25px;
+       text-decoration: none;
+       i {
+         position: absolute;
+         right: 2px;
+         top: calc(50% - 8px)
+       }
+       &:hover {
+         color: black;
+         background-color: rgba(255,255,255, .7);
+       }
+     }
+    }
+    td {
+     text-align: center;
+     padding: 4px 4px;
+   }
+ }
+  .text-center {
+    text-align: center;
+  }
+  .nowrap {
+    white-space: nowrap;
+  }
+}
