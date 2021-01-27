@@ -1,0 +1,10 @@
+export const TOKEN = 'TOKEN';
+export const INFO = 'INFO';
+export const LEAGUES = 'LEAGUES';
+export const LEAGUE = 'LEAGUE';
+export const TEAMS = 'TEAMS';
+export const TEAM = 'TEAM';
+export const PLAYER = 'PLAYER';
+export const GAMES = 'GAMES';
+export const GAME = 'GAMES';
+export const REMOVELEAGUE = 'REMOVELEAGUE';
