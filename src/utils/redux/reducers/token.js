@@ -1,7 +1,7 @@
 import { TOKEN } from '../actionTypes';
 
 const initialState = {
-  token: '',
+  token: undefined,
 };
 
 export default function getTokenReducer(state = initialState, action) {

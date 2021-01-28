@@ -10,13 +10,15 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import ButtonUI from '../../components/UI/Button/Button';
 import Playground from '../Playground/Playground';
-import { createGame } from '../../../utils/API/api';
+// import { createGame, updateTeam } from '../../../utils/API/api';
 import { getCurrentLeague } from '../../../utils/Cookie/cookie';
 import { store } from '../../../utils/redux/store';
 import { info } from '../../../utils/redux/actions';
 import Substitution from '../Substitution/Substitution';
 import Qarter from '../Quarter/Qarter';
 import { InfoLine } from '../infoLine/InfoLine';
+import { savePlayersFromGame } from '../GameSave/savePlayers';
+import { getPlayersForGameData } from '../GameFunctions/getPlayersForGame';
 
 const actions = [
   {
@@ -111,7 +113,6 @@ class Suite extends Component {
 
   componentDidMount() {
     document.addEventListener('keydown', this.keyDownHandler);
-    document.addEventListener('keypress', this.keyPressHandler);
     document.addEventListener('keyup', this.keyUpHandler);
     window.addEventListener('resize', this.checkMinWidth);
     this.getPlayersForGame();
@@ -124,7 +125,6 @@ class Suite extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyDownHandler);
-    document.removeEventListener('keypress', this.keyPressHandler);
     document.removeEventListener('keyup', this.keyUpHandler);
     window.removeEventListener('resize', this.checkMinWidth);
   }
@@ -162,205 +162,20 @@ class Suite extends Component {
    }
 
   getPlayersForGame = () => {
-    this.playersGameProgress = this.props.homeTeam[0].players.map((player) => ({
-      _id: player._id,
-      full: player.name.full,
-      time_in_game: '21:12',
-      team: this.props.homeTeam[0]._id,
-      start: this.isStartPlayer(player),
-      number: player.number,
-      stats: {
-        points: {
-          total: 0,
-        },
-        rebound: {
-          defence: {
-            total: 0,
-          },
-          offence: {
-            total: 0,
-          },
-        },
-        assists: {
-          total: 0,
-        },
-        steals: {
-          total: 0,
-        },
-        blocks: {
-          total: 0,
-        },
-        turnover: {
-          total: 0,
-        },
-        fouls: {
-          take: {
-            total: 0,
-          },
-          give: {
-            total: 0,
-          },
-        },
-        FT: {
-          total: 0,
-          made: 0,
-        },
-        two_points: {
-          total: 0,
-          made: 0,
-        },
-        three_points: {
-          total: 0,
-          made: 0,
-        },
-        zones: {
-          paint: {
-            total: 0,
-            made: 0,
-          },
-          left_two: {
-            total: 0,
-            made: 0,
-          },
-          right_two: {
-            total: 0,
-            made: 0,
-          },
-          left_two_45deg: {
-            total: 0,
-            made: 0,
-          },
-          right_two_45deg: {
-            total: 0,
-            made: 0,
-          },
-          center_two: {
-            total: 0,
-            made: 0,
-          },
-          left_three: {
-            total: 0,
-            made: 0,
-          },
-          right_three: {
-            total: 0,
-            made: 0,
-          },
-          left_three_45deg: {
-            total: 0,
-            made: 0,
-          },
-          right_three_45deg: {
-            total: 0,
-            made: 0,
-          },
-          center_three: {
-            total: 0,
-            made: 0,
-          },
-        },
-      },
+    this.playersGameProgress = this.props.homeTeam[0].players.map((player) => {
+      const curPlayer = getPlayersForGameData(this.props.homeTeam[0], player);
+
+      curPlayer.start = this.isStartPlayer(player);
+      return curPlayer;
+    });
+
+    this.playersGameProgress = this.playersGameProgress.concat(this.props.visitTeam[0].players.map((player) => {
+      const curPlayer = getPlayersForGameData(this.props.visitTeam[0], player);
+
+      curPlayer.start = this.isStartPlayer(player);
+      return curPlayer;
     }));
-    this.playersGameProgress = this.playersGameProgress.concat(this.props.visitTeam[0].players.map((player) => ({
-      _id: player._id,
-      full: player.name.full,
-      time_in_game: '21:12',
-      team: this.props.visitTeam[0]._id,
-      start: this.isStartPlayer(player),
-      number: player.number,
-      stats: {
-        points: {
-          total: 0,
-        },
-        rebound: {
-          defence: {
-            total: 0,
-          },
-          offence: {
-            total: 0,
-          },
-        },
-        assists: {
-          total: 0,
-        },
-        steals: {
-          total: 0,
-        },
-        blocks: {
-          total: 0,
-        },
-        turnover: {
-          total: 0,
-        },
-        fouls: {
-          take: {
-            total: 0,
-          },
-          give: {
-            total: 0,
-          },
-        },
-        FT: {
-          total: 0,
-          made: 0,
-        },
-        two_points: {
-          total: 0,
-          made: 0,
-        },
-        three_points: {
-          total: 0,
-          made: 0,
-        },
-        zones: {
-          paint: {
-            total: 0,
-            made: 0,
-          },
-          left_two: {
-            total: 0,
-            made: 0,
-          },
-          right_two: {
-            total: 0,
-            made: 0,
-          },
-          left_two_45deg: {
-            total: 0,
-            made: 0,
-          },
-          right_two_45deg: {
-            total: 0,
-            made: 0,
-          },
-          center_two: {
-            total: 0,
-            made: 0,
-          },
-          left_three: {
-            total: 0,
-            made: 0,
-          },
-          right_three: {
-            total: 0,
-            made: 0,
-          },
-          left_three_45deg: {
-            total: 0,
-            made: 0,
-          },
-          right_three_45deg: {
-            total: 0,
-            made: 0,
-          },
-          center_three: {
-            total: 0,
-            made: 0,
-          },
-        },
-      },
-    })));
-  }
+  };
 
   isPlayerSelected = () => this.state.selectedPlayer !== undefined;
 
@@ -423,43 +238,43 @@ class Suite extends Component {
     }
     if (e.keyCode === 81) {
       e.preventDefault();
-      this.actionHandler('FTMade');
+      this.actionHandler('FTMade', 'штрафной забит');
     }
     if (e.keyCode === 87) {
       e.preventDefault();
-      this.actionHandler('FTmiss');
+      this.actionHandler('FTmiss', 'штрафной не забит');
     }
     if (e.keyCode === 69) {
       e.preventDefault();
-      this.actionHandler('OR');
+      this.actionHandler('OR', 'подбор в нападении');
     }
     if (e.keyCode === 82) {
       e.preventDefault();
-      this.actionHandler('DR');
+      this.actionHandler('DR', 'подбор в защите');
     }
     if (e.keyCode === 84) {
       e.preventDefault();
-      this.actionHandler('AS');
+      this.actionHandler('AS', 'передача');
     }
     if (e.keyCode === 89) {
       e.preventDefault();
-      this.actionHandler('ST');
+      this.actionHandler('ST', 'перехват');
     }
     if (e.keyCode === 85) {
       e.preventDefault();
-      this.actionHandler('BLK');
+      this.actionHandler('BLK', 'блокшот');
     }
     if (e.keyCode === 73) {
       e.preventDefault();
-      this.actionHandler('TO');
+      this.actionHandler('TO', 'потеря');
     }
     if (e.keyCode === 79) {
       e.preventDefault();
-      this.actionHandler('PFG');
+      this.actionHandler('PFG', 'фол получен');
     }
     if (e.keyCode === 80) {
       e.preventDefault();
-      this.actionHandler('PFT');
+      this.actionHandler('PFT', 'фол заработан');
     }
   }
 
@@ -468,20 +283,6 @@ class Suite extends Component {
       this.setState({
         isShiftMode: false,
       });
-    }
-  }
-
-  keyPressHandler = (e) => {
-    if (e.keyCode === 32) {
-      e.preventDefault();
-      this.setState({
-        isTimerPlay: !this.state.isTimerPlay,
-      });
-      if (this.state.isTimerPlay) {
-        this.startTimerFunc();
-      } else {
-        this.stopTimerFunc();
-      }
     }
   }
 
@@ -647,9 +448,17 @@ class Suite extends Component {
             activePlayer.stats.two_points.made += 1;
             activePlayer.stats.zones.paint.total += 1;
             activePlayer.stats.zones.paint.made += 1;
+            activePlayer.stats.zones.paint.isTouchedMade = true;
+            activePlayer.stats.zones.paint.isTouched = true;
+            activePlayer.stats.two_points.isTouchedMade = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.two_points.total += 1;
             activePlayer.stats.zones.paint.total += 1;
+            activePlayer.stats.zones.paint.isTouched = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 2:
@@ -659,9 +468,17 @@ class Suite extends Component {
             activePlayer.stats.two_points.made += 1;
             activePlayer.stats.zones.left_two.total += 1;
             activePlayer.stats.zones.left_two.made += 1;
+            activePlayer.stats.zones.left_two.isTouchedMade = true;
+            activePlayer.stats.zones.left_two.isTouched = true;
+            activePlayer.stats.two_points.isTouchedMade = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.two_points.total += 1;
             activePlayer.stats.zones.left_two.total += 1;
+            activePlayer.stats.zones.left_two.isTouched = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 3:
@@ -671,9 +488,17 @@ class Suite extends Component {
             activePlayer.stats.two_points.made += 1;
             activePlayer.stats.zones.right_two.total += 1;
             activePlayer.stats.zones.right_two.made += 1;
+            activePlayer.stats.zones.right_two.isTouchedMade = true;
+            activePlayer.stats.zones.right_two.isTouched = true;
+            activePlayer.stats.two_points.isTouchedMade = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.two_points.total += 1;
             activePlayer.stats.zones.right_two.total += 1;
+            activePlayer.stats.zones.right_two.isTouched = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 4:
@@ -683,9 +508,17 @@ class Suite extends Component {
             activePlayer.stats.two_points.made += 1;
             activePlayer.stats.zones.left_two_45deg.total += 1;
             activePlayer.stats.zones.left_two_45deg.made += 1;
+            activePlayer.stats.zones.left_two_45deg.isTouchedMade = true;
+            activePlayer.stats.zones.left_two_45deg.isTouched = true;
+            activePlayer.stats.two_points.isTouchedMade = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.two_points.total += 1;
             activePlayer.stats.zones.left_two_45deg.total += 1;
+            activePlayer.stats.zones.left_two_45deg.isTouched = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 5:
@@ -695,9 +528,17 @@ class Suite extends Component {
             activePlayer.stats.two_points.made += 1;
             activePlayer.stats.zones.center_two.total += 1;
             activePlayer.stats.zones.center_two.made += 1;
+            activePlayer.stats.zones.center_two.isTouchedMade = true;
+            activePlayer.stats.zones.center_two.isTouched = true;
+            activePlayer.stats.two_points.isTouchedMade = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.two_points.total += 1;
             activePlayer.stats.zones.center_two.total += 1;
+            activePlayer.stats.zones.center_two.isTouched = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 6:
@@ -707,9 +548,17 @@ class Suite extends Component {
             activePlayer.stats.two_points.made += 1;
             activePlayer.stats.zones.right_two_45deg.total += 1;
             activePlayer.stats.zones.right_two_45deg.made += 1;
+            activePlayer.stats.zones.right_two_45deg.isTouchedMade = true;
+            activePlayer.stats.zones.right_two_45deg.isTouched = true;
+            activePlayer.stats.two_points.isTouchedMade = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.two_points.total += 1;
             activePlayer.stats.zones.right_two_45deg.total += 1;
+            activePlayer.stats.zones.right_two_45deg.isTouched = true;
+            activePlayer.stats.two_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 7:
@@ -719,9 +568,17 @@ class Suite extends Component {
             activePlayer.stats.three_points.made += 1;
             activePlayer.stats.zones.left_three.total += 1;
             activePlayer.stats.zones.left_three.made += 1;
+            activePlayer.stats.zones.left_three.isTouchedMade = true;
+            activePlayer.stats.zones.left_three.isTouched = true;
+            activePlayer.stats.three_points.isTouchedMade = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.three_points.total += 1;
             activePlayer.stats.zones.left_three.total += 1;
+            activePlayer.stats.zones.left_three.isTouched = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 8:
@@ -731,9 +588,17 @@ class Suite extends Component {
             activePlayer.stats.three_points.made += 1;
             activePlayer.stats.zones.left_three_45deg.total += 1;
             activePlayer.stats.zones.left_three_45deg.made += 1;
+            activePlayer.stats.zones.left_three_45deg.isTouchedMade = true;
+            activePlayer.stats.zones.left_three_45deg.isTouched = true;
+            activePlayer.stats.three_points.isTouchedMade = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.three_points.total += 1;
             activePlayer.stats.zones.left_three_45deg.total += 1;
+            activePlayer.stats.zones.left_three_45deg.isTouched = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 9:
@@ -743,9 +608,17 @@ class Suite extends Component {
             activePlayer.stats.three_points.made += 1;
             activePlayer.stats.zones.center_three.total += 1;
             activePlayer.stats.zones.center_three.made += 1;
+            activePlayer.stats.zones.center_three.isTouchedMade = true;
+            activePlayer.stats.zones.center_three.isTouched = true;
+            activePlayer.stats.three_points.isTouchedMade = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.three_points.total += 1;
             activePlayer.stats.zones.center_three.total += 1;
+            activePlayer.stats.zones.center_three.isTouched = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 10:
@@ -755,9 +628,17 @@ class Suite extends Component {
             activePlayer.stats.three_points.made += 1;
             activePlayer.stats.zones.right_three_45deg.total += 1;
             activePlayer.stats.zones.right_three_45deg.made += 1;
+            activePlayer.stats.zones.right_three_45deg.isTouchedMade = true;
+            activePlayer.stats.zones.right_three_45deg.isTouched = true;
+            activePlayer.stats.three_points.isTouchedMade = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.three_points.total += 1;
             activePlayer.stats.zones.right_three_45deg.total += 1;
+            activePlayer.stats.zones.right_three_45deg.isTouched = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         case 11:
@@ -767,9 +648,17 @@ class Suite extends Component {
             activePlayer.stats.three_points.made += 1;
             activePlayer.stats.zones.right_three.total += 1;
             activePlayer.stats.zones.right_three.made += 1;
+            activePlayer.stats.zones.right_three.isTouchedMade = true;
+            activePlayer.stats.zones.right_three.isTouched = true;
+            activePlayer.stats.three_points.isTouchedMade = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           } else {
             activePlayer.stats.three_points.total += 1;
             activePlayer.stats.zones.right_three.total += 1;
+            activePlayer.stats.zones.right_three.isTouched = true;
+            activePlayer.stats.three_points.isTouched = true;
+            activePlayer.stats.points.isTouched = true;
           }
           break;
         default:
@@ -807,7 +696,7 @@ class Suite extends Component {
   actionHandler = (actionKey, actionText) => {
     if (this.isPlayerSelected()) {
       const activePlayer = this.getActivePlayer();
-
+      console.log(activePlayer);
       this.getInfoMessage(`${activePlayer.full}: ${actionText}`);
 
       switch (actionKey) {
@@ -815,6 +704,9 @@ class Suite extends Component {
           activePlayer.stats.FT.made += 1;
           activePlayer.stats.FT.total += 1;
           activePlayer.stats.points.total += 1;
+          activePlayer.stats.FT.isTouchedMade = true;
+          activePlayer.stats.points.isTouched = true;
+          activePlayer.stats.FT.isTouched = true;
 
           if (activePlayer.team === this.props.homeTeam[0]._id) {
             this.setState({
@@ -828,30 +720,39 @@ class Suite extends Component {
           break;
         case 'FTmiss':
           activePlayer.stats.FT.total += 1;
+          activePlayer.stats.FT.isTouched = true;
           break;
         case 'OR':
           activePlayer.stats.rebound.offence.total += 1;
+          activePlayer.stats.rebound.offence.isTouched = true;
           break;
         case 'DR':
           activePlayer.stats.rebound.defence.total += 1;
+          activePlayer.stats.rebound.defence.isTouched = true;
           break;
         case 'AS':
           activePlayer.stats.assists.total += 1;
+          activePlayer.stats.assists.isTouched = true;
           break;
         case 'ST':
           activePlayer.stats.steals.total += 1;
+          activePlayer.stats.steals.isTouched = true;
           break;
         case 'BLK':
           activePlayer.stats.blocks.total += 1;
+          activePlayer.stats.blocks.isTouched = true;
           break;
         case 'TO':
           activePlayer.stats.turnover.total += 1;
+          activePlayer.stats.turnover.isTouched = true;
           break;
         case 'PFG':
           activePlayer.stats.fouls.give.total += 1;
+          activePlayer.stats.fouls.give.isTouched = true;
           break;
         case 'PFT':
           activePlayer.stats.fouls.take.total += 1;
+          activePlayer.stats.fouls.take.isTouched = true;
           break;
         default:
           break;
@@ -903,7 +804,7 @@ class Suite extends Component {
   }
 
   saveGameData = () => {
-    const data = {
+    const gameData = {
       league: getCurrentLeague()._id,
       team_home: this.props.homeTeam[0]._id,
       team_home_name: this.props.homeTeam[0].name,
@@ -914,10 +815,33 @@ class Suite extends Component {
       players: this.playersGameProgress,
     };
 
-    createGame(data);
+    /* const teamDataHome = {
+      game: {
+        played: this.props.homeTeam[0].game.played + 1,
+        win: gameData.score_home > gameData.score_visit ? this.props.homeTeam[0].game.win + 1 : this.props.homeTeam[0].game.win,
+      },
+    };
+    const teamDataVisit = {
+      game: {
+        played: this.props.visitTeam[0].game.played + 1,
+        win: gameData.score_visit > gameData.score_home ? this.props.visitTeam[0].game.win + 1 : this.props.visitTeam[0].game.win,
+      },
+    }; */
+    try {
+      // updateTeam(this.props.homeTeam[0]._id, teamDataHome);
+      // updateTeam(this.props.visitTeam[0]._id, teamDataVisit);
+
+      savePlayersFromGame(gameData.players);
+
+      // createGame(gameData);
+    } catch (e) {
+      localStorage.setItem('info', 'Ошибка сохранения');
+      store.dispatch(info('Ошибка сохранения', true));
+    }
   }
 
   render() {
+    console.log(this.playersGameProgress);
     return (
       <div className="Suite">
         { this.state.open
@@ -936,13 +860,13 @@ class Suite extends Component {
             </DialogContent>
             <DialogActions>
               <Button
-                color="red"
+                color="primary"
                 onClick={this.handleClose}
               >
                 Отмена
               </Button>
               <Button
-                color="red"
+                color="primary"
                 disabled={false}
                 onClick={() => {
                   this.setState({
@@ -980,7 +904,7 @@ class Suite extends Component {
                 Отмена
               </Button>
               <Button
-                color="red"
+                color="primary"
                 disabled={false}
                 onClick={() => {
                   this.saveGameData();
@@ -997,7 +921,7 @@ class Suite extends Component {
           location="left"
           isShow={this.state.isHomeSubsShow ? 'left-show' : ''}
           players={this.getSubstitutionPlayers(true)}
-          subsPlayer={this.subsitutePlayer}
+          onSubsPlayer={this.subsitutePlayer}
         />
         <Substitution
           location="right"
@@ -1042,7 +966,10 @@ class Suite extends Component {
           </div>
 
           <div>
-            <Qarter onQarterChange={this.changeQuarter} />
+            <Qarter
+              disabled={this.state.isTimerPlay}
+              onQarterChange={this.changeQuarter}
+            />
             <Timer
               initialTime={600000}
               direction="backward"
@@ -1143,30 +1070,26 @@ class Suite extends Component {
         <div className="Suite-main">
           <div className="Suite-player-wrap">
             <div className="start-line">
-              {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-              <div
-                className="Suite-player-substitution"
+              <ButtonUI
+                type="Suite-player-substitution"
                 title="замена гостей"
-                role="button"
-                tabIndex={0}
-                aria-label="subs"
-                onClick={this.toggleSubstitution.bind(this, false)}
+                disabled={this.state.isTimerPlay}
+                OnBtnclick={() => { this.toggleSubstitution(false); }}
               >
                 <i className="fas fa-exchange-alt" />
-              </div>
+              </ButtonUI>
               {this.showStartLines(false)}
             </div>
             <div className="start-line">
               {this.showStartLines(true)}
-              {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-              <button
-                className="Suite-player-substitution"
-                title="замена хозяев"
-                disabled
-                onClick={this.toggleSubstitution.bind(this, true)}
+              <ButtonUI
+                type="Suite-player-substitution"
+                title="замена гостей"
+                disabled={this.state.isTimerPlay}
+                OnBtnclick={() => { this.toggleSubstitution(true); }}
               >
                 <i className="fas fa-exchange-alt" />
-              </button>
+              </ButtonUI>
             </div>
           </div>
           <div className="Suite-actions">
@@ -1182,7 +1105,7 @@ class Suite extends Component {
         <div className="save-btn-wrapper">
           <ButtonUI
             type="primary"
-            disabled={false}
+            disabled={this.state.isTimerPlay}
             OnBtnclick={this.handleSaveOpen}
           >
             Save

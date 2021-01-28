@@ -15,6 +15,7 @@
   background-color: rgba(0, 0, 0, 0.7);
   padding: 30px;
   border-radius: 10px;
+  width: 100%;
 }
 .ChoiseTeam-lists {
   display: flex;

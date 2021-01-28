@@ -135,6 +135,7 @@ export const updateTeam = async (id, data) => {
 };
 
 export const updatePlayer = async (id, data) => {
+  console.log(data);
   try {
     const response = await axios.patch(`${localhost}players/${id}`, data, { headers: { Authorization: ` ${store.getState().token.token}` } });
     localStorage.setItem('info', response.data.message);

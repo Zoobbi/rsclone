@@ -72,7 +72,7 @@ class App extends Component {
                          <Route path="/players/detals" exact component={Player} />
                          <Route path="/player_patch/detals" exact component={PatchPlayer} />
                          <Route path="/user" exact component={UserProfile} />
-                         {getUser().isAdmin ? <Route path="/game" exact component={GameWrapper} /> : null}
+                         {getUser() && getUser().isAdmin ? <Route path="/game" exact component={GameWrapper} /> : null}
                          <Route path="/game/start" exact component={StartPlayers} />
                          <Route path="/games/detals" exact component={GameHistory} />
                          <Route path="/" exact component={HomeWrapper} />

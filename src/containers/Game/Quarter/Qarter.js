@@ -11,6 +11,7 @@ class Qarter extends Component {
           className="classic"
           name="quarter"
           id="quarter"
+          disabled={this.props.isTimerPlay}
           onChange={(e) => { this.props.onQarterChange(e.target.value); }}
         >
           <option value="1">1</option>
@@ -25,9 +26,11 @@ class Qarter extends Component {
 
 Qarter.defaultProps = {
   onQarterChange: null,
+  isTimerPlay: false,
 };
 
 Qarter.propTypes = {
   onQarterChange: propTypes.func,
+  isTimerPlay: propTypes.bool,
 };
 export default Qarter;

@@ -13,7 +13,9 @@ const links = [
   { to: '/user', label: 'Пользователь', exact: false },
 ];
 
-if (getUser().isAdmin) {
+console.log(getUser().isAdmin);
+
+if (getUser() && getUser().isAdmin) {
   links.push({ to: '/game', label: 'Игра', exact: false });
 }
 
