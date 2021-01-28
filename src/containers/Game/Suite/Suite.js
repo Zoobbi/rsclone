@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './Suite.scss';
 import propTypes from 'prop-types';
-import Timer from '../Timer/Timer';
+// import Timer from '../Timer/Timer';
+import Timer from 'react-compound-timer';
 import Playground from '../Playground/Playground';
 import Button from '../../components/UI/Button/Button';
 import { createGame } from '../../../utils/API/api';
 import { getCurrentLeague } from '../../../utils/Cookie/cookie';
 import { store } from '../../../utils/redux/store';
 import { info } from '../../../utils/redux/actions';
+import Substitution from '../Substitution/Substitution';
+import Qarter from '../Quarter/Qarter';
 
 const actions = [
   {
@@ -74,6 +77,11 @@ class Suite extends Component {
       homeScore: 0,
       selectedPlayer: undefined,
       isShiftMode: false,
+      isVisitSubsShow: false,
+      isHomeSubsShow: false,
+      inGameVisit: [],
+      inGameHome: [],
+      quarter: 1,
     };
     this.playersGameProgress = [];
   }
@@ -84,6 +92,10 @@ class Suite extends Component {
     window.addEventListener('resize', this.checkMinWidth);
     this.getPlayersForGame();
     this.checkMinWidth();
+    this.setState({
+      inGameVisit: this.props.startLineVisit,
+      inGameHome: this.props.startLineHome,
+    });
   }
 
   componentWillUnmount() {
@@ -95,7 +107,7 @@ class Suite extends Component {
   checkMinWidth = () => {
     if (window.innerWidth < 1024) {
       localStorage.setItem('info', 'Маленький размер экрана');
-      store.dispatch(info('Маленький размер экрана', false));
+      store.dispatch(info('Маленький размер экрана', true));
     }
   }
 
@@ -419,12 +431,22 @@ class Suite extends Component {
     }
   }
 
+  getSubstitutionPlayers = (isHomeTeam) => {
+    if (isHomeTeam) {
+      const allPlayers = this.props.homeTeam[0].players;
+      const inGamePlayers = this.state.inGameHome;
+
+      return allPlayers.filter((player) => inGamePlayers.find((item) => item._id === player._id) === undefined);
+    }
+    return this.props.visitTeam[0].players.filter((player) => this.state.inGameVisit.find((item) => player._id === item._id) === undefined);
+  }
+
   selectedPlayerHandler = (player) => this.setState({
     selectedPlayer: this.isPlayerSelected() && this.state.selectedPlayer._id === player._id ? undefined : player,
   });
 
   showStartLines = (isHomeTeam) => {
-    const players = isHomeTeam ? this.props.startLineHome : this.props.startLineVisit;
+    const players = isHomeTeam ? this.state.inGameHome : this.state.inGameVisit;
 
     return players.map((player, index) => (
       // eslint-disable-next-line jsx-a11y/click-events-have-key-events
@@ -605,6 +627,9 @@ class Suite extends Component {
         default:
           break;
       }
+    } else {
+      localStorage.setItem('info', 'Сначала выберите игрока');
+      store.dispatch(info('Сначала выберите игрока', true));
     }
   };
 
@@ -678,6 +703,49 @@ class Suite extends Component {
     }
   }
 
+  toggleSubstitution = (isHomeTeam) => {
+    if (isHomeTeam) {
+      this.setState({
+        isHomeSubsShow: !this.state.isHomeSubsShow,
+      });
+    } else {
+      this.setState({
+        isVisitSubsShow: !this.state.isVisitSubsShow,
+      });
+    }
+  }
+
+  subsitutePlayer = (player) => {
+    const inGamePlayer = this.state.selectedPlayer;
+
+    if (!inGamePlayer) {
+      localStorage.setItem('info', 'выберите игрока на площадке');
+      store.dispatch(info('выберите игрока на площадке', true));
+    } else if (player.team === this.props.homeTeam[0]._id) {
+      const inGameLine = [...this.state.inGameHome];
+      const inGamePlayerIndex = this.state.inGameHome.findIndex((item) => item._id === inGamePlayer._id);
+
+      inGameLine.splice(inGamePlayerIndex, 1, player);
+      this.setState({
+        inGameHome: inGameLine,
+      });
+    } else {
+      const inGameLine = [...this.state.inGameVisit];
+      const inGamePlayerIndex = this.state.inGameVisit.findIndex((item) => item._id === inGamePlayer._id);
+
+      inGameLine.splice(inGamePlayerIndex, 1, player);
+      this.setState({
+        inGameVisit: inGameLine,
+      });
+    }
+  }
+
+  changeQuarter = (quarter) => {
+    this.setState({
+      quarter,
+    });
+  }
+
   saveGameData = () => {
     const data = {
       league: getCurrentLeague()._id,
@@ -696,6 +764,18 @@ class Suite extends Component {
   render() {
     return (
       <div className="Suite">
+        <Substitution
+          location="left"
+          isShow={this.state.isHomeSubsShow ? 'left-show' : ''}
+          players={this.getSubstitutionPlayers(true)}
+          subsPlayer={this.subsitutePlayer}
+        />
+        <Substitution
+          location="right"
+          isShow={this.state.isVisitSubsShow ? 'right-show' : ''}
+          players={this.getSubstitutionPlayers(false)}
+          onSubsPlayer={this.subsitutePlayer}
+        />
         <div className="Suite-top-line">
           <div className="Suite-team">
             <div>
@@ -731,7 +811,56 @@ class Suite extends Component {
             </div>
             <div className="Suite-team-score">{this.state.visitScore}</div>
           </div>
-          <Timer />
+
+          <div>
+            <Qarter onQarterChange={this.changeQuarter} />
+            <Timer
+              initialTime={6000}
+              direction="backward"
+              startImmediately={false}
+            >
+              {({
+                start, resume, pause, stop, reset, timerState,
+              }) => (
+                <>
+                  <div>
+
+                    <div className="timer timer-min">
+                      <Timer.Minutes />
+                    </div>
+
+                    {' '}
+                    minutes
+                    <div className="timer timer-min">
+                      <Timer.Seconds />
+                    </div>
+                    {' '}
+                    seconds
+
+                  </div>
+                  <div>{timerState}</div>
+                  <br />
+                  <div>
+                    <button onClick={() => {
+                      if (this.state.selectedPlayer) {
+                        stop();
+                      } else {
+                        start();
+                      }
+                    }}
+                    >
+                      <i className="fas fa-play" />
+                    </button>
+                    <button onClick={pause}>Pause</button>
+                    <button onClick={resume}>Resume</button>
+                    <button onClick={stop}>Stop</button>
+                    <button onClick={reset}>Reset</button>
+                  </div>
+                </>
+              )}
+            </Timer>
+          </div>
+
           <div className="Suite-team">
             <div className="Suite-team-score">{this.state.homeScore}</div>
             <div>
@@ -770,14 +899,30 @@ class Suite extends Component {
         <div className="Suite-main">
           <div className="Suite-player-wrap">
             <div className="start-line">
-              <div className="Suite-player-substitution" title="замена гостей">
+              {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+              <div
+                className="Suite-player-substitution"
+                title="замена гостей"
+                role="button"
+                tabIndex={0}
+                aria-label="subs"
+                onClick={this.toggleSubstitution.bind(this, false)}
+              >
                 <i className="fas fa-exchange-alt" />
               </div>
               {this.showStartLines(false)}
             </div>
             <div className="start-line">
               {this.showStartLines(true)}
-              <div className="Suite-player-substitution" title="замена хозяев">
+              {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+              <div
+                className="Suite-player-substitution"
+                title="замена хозяев"
+                role="button"
+                tabIndex={0}
+                aria-label="subs"
+                onClick={this.toggleSubstitution.bind(this, true)}
+              >
                 <i className="fas fa-exchange-alt" />
               </div>
             </div>

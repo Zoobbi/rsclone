@@ -1,7 +1,10 @@
 .Suite {
   width: 100%;
   height: 100%;
-  padding: 15px 15px;
+  padding: 5px 15px 15px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 .Suite-top-line {
   display: flex;
@@ -156,6 +159,10 @@
 
 .Suite .text-right {
   text-align: right;
+}
+
+.red {
+  background-color: red;
 }
 
 /*# sourceMappingURL=Suite.css.map */

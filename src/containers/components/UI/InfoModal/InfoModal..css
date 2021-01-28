@@ -6,6 +6,8 @@
   font-size: 1rem;
   top: 15%;
   right: -200px;
+  padding-left: 5px;
+  text-align: center;
   display: flex;
   letter-spacing: 0.5px;
   justify-content: center;
@@ -13,6 +15,7 @@
   border: 2px solid #19FF24;
   box-sizing: border-box;
   border-radius: 7px 0 0 7px;
+  z-index: 100;
   transition: 0.5s;
 }
 
