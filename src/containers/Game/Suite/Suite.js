@@ -1,67 +1,83 @@
 import React, { Component } from 'react';
 import './Suite.scss';
 import propTypes from 'prop-types';
-// import Timer from '../Timer/Timer';
 import Timer from 'react-compound-timer';
+import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions/DialogActions';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
+import ButtonUI from '../../components/UI/Button/Button';
 import Playground from '../Playground/Playground';
-import Button from '../../components/UI/Button/Button';
 import { createGame } from '../../../utils/API/api';
 import { getCurrentLeague } from '../../../utils/Cookie/cookie';
 import { store } from '../../../utils/redux/store';
 import { info } from '../../../utils/redux/actions';
 import Substitution from '../Substitution/Substitution';
 import Qarter from '../Quarter/Qarter';
+import { InfoLine } from '../infoLine/InfoLine';
 
 const actions = [
   {
     text: 'FT Made',
     key: 'FTMade',
     title: 'штрафной забит',
+    hotKey: 'Q',
   },
   {
     text: 'FT Miss',
     key: 'FTmiss',
     title: 'штрафной не забит',
+    hotKey: 'W',
   },
   {
     text: 'Off Rebound',
     key: 'OR',
     title: 'подбор в нападении',
+    hotKey: 'E',
   },
   {
     text: 'Def Rebound',
     key: 'DR',
     title: 'подбор в защите',
+    hotKey: 'R',
   },
   {
     text: 'Assist',
     key: 'AS',
     title: 'передача',
+    hotKey: 'T',
   },
   {
     text: 'Steal',
     key: 'ST',
     title: 'перехват',
+    hotKey: 'Y',
   },
   {
     text: 'Block',
     key: 'BLK',
     title: 'блокшот',
+    hotKey: 'U',
   },
   {
     text: 'Turnover',
     key: 'TO',
     title: 'потеря',
+    hotKey: 'I',
   },
   {
     text: 'Foul give',
     key: 'PFG',
     title: 'фол получен',
+    hotKey: 'O',
   },
   {
     text: 'Foul take',
     key: 'PFT',
     title: 'фол заработан',
+    hotKey: 'P',
   },
 ];
 
@@ -69,6 +85,8 @@ class Suite extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      open: false,
+      saveOpen: false,
       visitTeamFoul: 0,
       homeTeamFoul: 0,
       visitTimeout: 0,
@@ -82,12 +100,18 @@ class Suite extends Component {
       inGameVisit: [],
       inGameHome: [],
       quarter: 1,
+      actionMessage: '',
+      isTimerPlay: false,
     };
     this.playersGameProgress = [];
+    this.startTimerFunc = null;
+    this.stopTimerFunc = null;
+    this.resetTimerFunc = null;
   }
 
   componentDidMount() {
     document.addEventListener('keydown', this.keyDownHandler);
+    document.addEventListener('keypress', this.keyPressHandler);
     document.addEventListener('keyup', this.keyUpHandler);
     window.addEventListener('resize', this.checkMinWidth);
     this.getPlayersForGame();
@@ -100,8 +124,25 @@ class Suite extends Component {
 
   componentWillUnmount() {
     document.removeEventListener('keydown', this.keyDownHandler);
+    document.removeEventListener('keypress', this.keyPressHandler);
     document.removeEventListener('keyup', this.keyUpHandler);
     window.removeEventListener('resize', this.checkMinWidth);
+  }
+
+  handleClose = () => {
+    this.setState({ open: false });
+  }
+
+  handleOpen = () => {
+    this.setState({ open: true });
+  }
+
+  handleSaveClose = () => {
+    this.setState({ saveOpen: false });
+  }
+
+  handleSaveOpen = () => {
+    this.setState({ saveOpen: true });
   }
 
   checkMinWidth = () => {
@@ -329,6 +370,97 @@ class Suite extends Component {
         isShiftMode: true,
       });
     }
+    if (e.keyCode === 32) {
+      e.preventDefault();
+      this.setState({
+        isTimerPlay: !this.state.isTimerPlay,
+      });
+      if (this.state.isTimerPlay) {
+        this.startTimerFunc();
+      } else {
+        this.stopTimerFunc();
+      }
+    }
+    if (e.keyCode === 49) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameVisit[0]);
+    }
+    if (e.keyCode === 50) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameVisit[1]);
+    }
+    if (e.keyCode === 51) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameVisit[2]);
+    }
+    if (e.keyCode === 52) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameVisit[3]);
+    }
+    if (e.keyCode === 53) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameVisit[4]);
+    }
+    if (e.keyCode === 54) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameHome[0]);
+    }
+    if (e.keyCode === 55) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameHome[1]);
+    }
+    if (e.keyCode === 56) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameHome[2]);
+    }
+    if (e.keyCode === 57) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameHome[3]);
+    }
+    if (e.keyCode === 48) {
+      e.preventDefault();
+      this.selectedPlayerHandler(this.state.inGameHome[4]);
+    }
+    if (e.keyCode === 81) {
+      e.preventDefault();
+      this.actionHandler('FTMade');
+    }
+    if (e.keyCode === 87) {
+      e.preventDefault();
+      this.actionHandler('FTmiss');
+    }
+    if (e.keyCode === 69) {
+      e.preventDefault();
+      this.actionHandler('OR');
+    }
+    if (e.keyCode === 82) {
+      e.preventDefault();
+      this.actionHandler('DR');
+    }
+    if (e.keyCode === 84) {
+      e.preventDefault();
+      this.actionHandler('AS');
+    }
+    if (e.keyCode === 89) {
+      e.preventDefault();
+      this.actionHandler('ST');
+    }
+    if (e.keyCode === 85) {
+      e.preventDefault();
+      this.actionHandler('BLK');
+    }
+    if (e.keyCode === 73) {
+      e.preventDefault();
+      this.actionHandler('TO');
+    }
+    if (e.keyCode === 79) {
+      e.preventDefault();
+      this.actionHandler('PFG');
+    }
+    if (e.keyCode === 80) {
+      e.preventDefault();
+      this.actionHandler('PFT');
+    }
   }
 
   keyUpHandler = (e) => {
@@ -336,6 +468,20 @@ class Suite extends Component {
       this.setState({
         isShiftMode: false,
       });
+    }
+  }
+
+  keyPressHandler = (e) => {
+    if (e.keyCode === 32) {
+      e.preventDefault();
+      this.setState({
+        isTimerPlay: !this.state.isTimerPlay,
+      });
+      if (this.state.isTimerPlay) {
+        this.startTimerFunc();
+      } else {
+        this.stopTimerFunc();
+      }
     }
   }
 
@@ -474,6 +620,8 @@ class Suite extends Component {
       const isHomeTeam = this.props.homeTeam[0].players.find((player) => this.state.selectedPlayer._id === player._id) !== undefined;
       const pointsDiff = sectorId < 7 ? 2 : 3;
       const activePlayer = this.getActivePlayer();
+
+      this.getInfoMessage(`${activePlayer.full}: ${this.state.isShiftMode ? 'не забил' : 'забил'} из ${sectorId}`);
 
       if (!this.state.isShiftMode) {
         if (isHomeTeam) {
@@ -643,18 +791,26 @@ class Suite extends Component {
         tabIndex={0}
         title={action.title}
         aria-label="action"
-        onClick={this.actionHandler.bind(this, action.key)}
+        onClick={this.actionHandler.bind(this, action.key, action.title)}
       >
         {action.text}
       </div>
     ))
   );
 
-  actionHandler = (action) => {
+  getInfoMessage= (actionMessage) => {
+    this.setState({
+      actionMessage,
+    });
+  };
+
+  actionHandler = (actionKey, actionText) => {
     if (this.isPlayerSelected()) {
       const activePlayer = this.getActivePlayer();
 
-      switch (action) {
+      this.getInfoMessage(`${activePlayer.full}: ${actionText}`);
+
+      switch (actionKey) {
         case 'FTMade':
           activePlayer.stats.FT.made += 1;
           activePlayer.stats.FT.total += 1;
@@ -701,7 +857,7 @@ class Suite extends Component {
           break;
       }
     }
-  }
+  };
 
   toggleSubstitution = (isHomeTeam) => {
     if (isHomeTeam) {
@@ -713,7 +869,7 @@ class Suite extends Component {
         isVisitSubsShow: !this.state.isVisitSubsShow,
       });
     }
-  }
+  };
 
   subsitutePlayer = (player) => {
     const inGamePlayer = this.state.selectedPlayer;
@@ -738,7 +894,7 @@ class Suite extends Component {
         inGameVisit: inGameLine,
       });
     }
-  }
+  };
 
   changeQuarter = (quarter) => {
     this.setState({
@@ -764,6 +920,79 @@ class Suite extends Component {
   render() {
     return (
       <div className="Suite">
+        { this.state.open
+        && (
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Сброс</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Действительно хотите сбросить таймер&nbsp; ?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                color="red"
+                onClick={this.handleClose}
+              >
+                Отмена
+              </Button>
+              <Button
+                color="red"
+                disabled={false}
+                onClick={() => {
+                  this.setState({
+                    isTimerPlay: false,
+                  });
+                  this.resetTimerFunc();
+                  this.handleClose();
+                }}
+                autoFocus
+              >
+                Сбросить
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
+        { this.state.saveOpen
+        && (
+          <Dialog
+            open={this.state.saveOpen}
+            onClose={this.handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">Сохранить</DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description">
+                Действительно хотите сохранить данную игру&nbsp; ?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                color="primary"
+                onClick={this.handleSaveClose}
+              >
+                Отмена
+              </Button>
+              <Button
+                color="red"
+                disabled={false}
+                onClick={() => {
+                  this.saveGameData();
+                  this.handleSaveClose();
+                }}
+                autoFocus
+              >
+                Сохранить
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )}
         <Substitution
           location="left"
           isShow={this.state.isHomeSubsShow ? 'left-show' : ''}
@@ -815,50 +1044,65 @@ class Suite extends Component {
           <div>
             <Qarter onQarterChange={this.changeQuarter} />
             <Timer
-              initialTime={6000}
+              initialTime={600000}
               direction="backward"
               startImmediately={false}
             >
               {({
-                start, resume, pause, stop, reset, timerState,
-              }) => (
-                <>
-                  <div>
+                start, stop, reset,
+              }) => {
+                this.startTimerFunc = start;
+                this.stopTimerFunc = stop;
+                this.resetTimerFunc = reset;
 
-                    <div className="timer timer-min">
-                      <Timer.Minutes />
+                return (
+                  <>
+                    <div className="timer-wrapper">
+                      <div className="timer-control">
+                        <button
+                          className="timer-control-btn__start"
+                          title={this.state.isTimerPlay ? 'СТОП' : 'СТАРТ'}
+                          onClick={() => {
+                            this.setState({
+                              isTimerPlay: !this.state.isTimerPlay,
+                            });
+                            if (this.state.isTimerPlay) {
+                              stop();
+                            } else {
+                              start();
+                            }
+                          }}
+                        >
+                          {this.state.isTimerPlay ? <i className="fas fa-pause" /> : <i className="fas fa-play" />}
+                        </button>
+                        <button
+                          className="timer-control-btn__start"
+                          onClick={() => {
+                            this.handleOpen();
+                          }}
+                        >
+                          <i className="fas fa-undo" />
+                        </button>
+                      </div>
+                      <div className="timer-time">
+                        <div className="timer timer-min">
+                          <Timer.Minutes
+                            formatValue={(text) => (text.toString().length > 1 ? text : `0${text}`)}
+                          />
+                          :
+                        </div>
+                        <div className="timer timer-sec">
+                          <Timer.Seconds
+                            formatValue={(text) => (text.toString().length > 1 ? text : `0${text}`)}
+                          />
+                        </div>
+                      </div>
                     </div>
-
-                    {' '}
-                    minutes
-                    <div className="timer timer-min">
-                      <Timer.Seconds />
-                    </div>
-                    {' '}
-                    seconds
-
-                  </div>
-                  <div>{timerState}</div>
-                  <br />
-                  <div>
-                    <button onClick={() => {
-                      if (this.state.selectedPlayer) {
-                        stop();
-                      } else {
-                        start();
-                      }
-                    }}
-                    >
-                      <i className="fas fa-play" />
-                    </button>
-                    <button onClick={pause}>Pause</button>
-                    <button onClick={resume}>Resume</button>
-                    <button onClick={stop}>Stop</button>
-                    <button onClick={reset}>Reset</button>
-                  </div>
-                </>
-              )}
+                  </>
+                );
+              }}
             </Timer>
+            {this.state.actionMessage ? <InfoLine message={this.state.actionMessage} /> : null}
           </div>
 
           <div className="Suite-team">
@@ -915,16 +1159,14 @@ class Suite extends Component {
             <div className="start-line">
               {this.showStartLines(true)}
               {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-              <div
+              <button
                 className="Suite-player-substitution"
                 title="замена хозяев"
-                role="button"
-                tabIndex={0}
-                aria-label="subs"
+                disabled
                 onClick={this.toggleSubstitution.bind(this, true)}
               >
                 <i className="fas fa-exchange-alt" />
-              </div>
+              </button>
             </div>
           </div>
           <div className="Suite-actions">
@@ -937,13 +1179,15 @@ class Suite extends Component {
             sectorClick={this.shootSectorHandler}
           />
         </div>
-        <Button
-          type="primary"
-          disabled={false}
-          OnBtnclick={this.saveGameData}
-        >
-          Save
-        </Button>
+        <div className="save-btn-wrapper">
+          <ButtonUI
+            type="primary"
+            disabled={false}
+            OnBtnclick={this.handleSaveOpen}
+          >
+            Save
+          </ButtonUI>
+        </div>
       </div>
     );
   }
