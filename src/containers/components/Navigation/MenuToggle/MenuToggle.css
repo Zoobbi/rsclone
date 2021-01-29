@@ -16,4 +16,14 @@
   left: 320px;
 }
 
+@media (min-width: 320px) and (max-width: 575.98px) {
+  .MenuToggle {
+    left: 15px;
+  }
+
+  .MenuToggle.open {
+    left: 270px;
+  }
+}
+
 /*# sourceMappingURL=MenuToggle.css.map */

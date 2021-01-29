@@ -54,7 +54,7 @@ class LeagueContent extends Component {
          {getUser().isAdmin
            ? (
              <ButtonUi
-               type="primary"
+               type="register"
                disabled={false}
              >
                <NavLink

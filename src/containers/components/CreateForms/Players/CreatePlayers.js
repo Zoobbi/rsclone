@@ -22,7 +22,7 @@ class CreatePlayer extends Component {
           value: '',
           type: 'text',
           label: 'Имя:',
-          errorMessage: 'от 2 до 15 букв или цифр',
+          errorMessage: 'только буквы',
           valid: false,
           touched: false,
           validation: {
@@ -34,7 +34,7 @@ class CreatePlayer extends Component {
           value: '',
           type: 'text',
           label: 'Фамилия:',
-          errorMessage: 'от 2 до 15 букв или цифр',
+          errorMessage: 'Только буквы одного языка',
           valid: false,
           touched: false,
           validation: {
@@ -86,7 +86,9 @@ class CreatePlayer extends Component {
 
     if (validation.nameRures) {
       // eslint-disable-next-line no-useless-escape
-      isValid = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$/.test(value);
+      // isValid = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$/.test(value);
+      // eslint-disable-next-line no-useless-escape
+      isValid = /^([а-яё\s]{1,15}|[a-z\s]{1,15})$/iu.test(value);
     }
 
     if (validation.isNumberValid) {

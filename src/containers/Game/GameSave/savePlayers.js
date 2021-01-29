@@ -2,7 +2,7 @@ import { updatePlayer } from '../../../utils/API/api';
 
 export const savePlayersFromGame = (players) => {
   players.forEach((player) => {
-    const statItem = player;
+    const statItem = JSON.parse(JSON.stringify(player));
 
     statItem.stats.game_played = player.time_in_game !== 'DNP' ? player.stats.game_played + 1 : player.stats.game_played;
     statItem.stats.game_started = player.start ? player.stats.game_started + 1 : player.stats.game_started;

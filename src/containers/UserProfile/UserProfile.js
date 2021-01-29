@@ -33,11 +33,11 @@ class UserProfile extends Component {
         <div className="UserProfile-content">
           <div>
             Имя:&nbsp;
-            {getUser().name}
+            {getUser() ? getUser().name : '-'}
           </div>
           <div className="email">
             email:&nbsp;
-            {getUser().email}
+            {getUser() ? getUser().email : '-'}
           </div>
           <div className="league">
             Лига:&nbsp;

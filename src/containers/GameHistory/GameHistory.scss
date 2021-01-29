@@ -1,5 +1,6 @@
 .GameHistory {
   width: 100%;
+
   min-height: 100vh;
   background: linear-gradient(360deg, #ef32d9,#89fffd);
   padding: 1rem;
@@ -8,9 +9,24 @@
   align-items: center;
   color: #ffffff;
   &-content {
+    position: relative;
     background-color: rgba(0,0,0, .7);
     padding: 30px;
     border-radius: 10px;
+    overflow-x: auto;
+    .print {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 1.7rem;
+      border-radius: 50%;
+      padding: 20px;
+      cursor: pointer;
+      transition: .4s;
+      &:hover{
+        background-color: rgba(255,255,255,.3);
+      }
+    }
     h2 {
       text-align: center;
       margin-bottom: 30px;
@@ -54,4 +70,7 @@
   .nowrap {
     white-space: nowrap;
   }
+}
+.GameHistory-visit, .GameHistory-visit {
+  overflow-x: auto;
 }

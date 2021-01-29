@@ -11,30 +11,46 @@
 }
 .Player-stats-container {
   margin-top: 30px;
-}
-.Player-stats-metric {
-  padding: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   background-color: #fff;
-  text-align: center;
+  padding: 15px;
 }
-.Player-stats-metric thead td {
+.Player-stats-item {
+  border: 1px solid #ccc;
+  padding: 5px 7px;
+  text-transform: uppercase;
+  text-align: center;
   cursor: help;
 }
-.Player-stats-metric td {
-  padding: 4px 6px;
-  border: 1px solid #cccccc;
-  text-transform: uppercase;
+.Player-stats-item .total {
+  padding: 3px 0;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
 }
-.Player-stats-shoot {
-  padding: 15px;
+.Player-stats-shoot_item {
+  border: 1px solid #ccc;
+  border-collapse: collapse;
+}
+.Player-stats-shoot_item .ABBR {
+  border-bottom: 1px solid #ccc;
+}
+.Player-stats-shoot_item .content {
+  display: flex;
+}
+.Player-stats-shoot_item .item-wrapper {
+  padding: 0 7px;
+}
+.Player-stats-shoot-wrapper {
+  display: flex;
   background-color: #fff;
-  text-align: center;
-  margin-top: 30px;
-}
-.Player-stats-shoot td {
-  padding: 4px 6px;
-  border: 1px solid #cccccc;
+  justify-content: center;
+  padding: 15px;
+  margin-top: 40px;
   text-transform: uppercase;
+  text-align: center;
+  flex-wrap: wrap;
 }
 .Player-number {
   position: absolute;

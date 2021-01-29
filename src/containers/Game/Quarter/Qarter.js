@@ -12,7 +12,9 @@ class Qarter extends Component {
           name="quarter"
           id="quarter"
           disabled={this.props.isTimerPlay}
-          onChange={(e) => { this.props.onQarterChange(e.target.value); }}
+          onChange={(e) => {
+            this.props.onQarterChange(e.target.value);
+          }}
         >
           <option value="1">1</option>
           <option value="2">2</option>

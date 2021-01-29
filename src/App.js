@@ -23,6 +23,7 @@ import GameWrapper from './containers/Game/GameWrapper/GameWrapper';
 import StartPlayers from './containers/Game/StartPlayers/StartPlayers';
 import { NoPage } from './containers/components/UI/NoPage/NoPage';
 import GameHistory from './containers/GameHistory/GameHistory';
+// import GameHistoryToPrint from './containers/GameHistoryToPrint/GameHistoryToPrint';
 
 class App extends Component {
   constructor() {

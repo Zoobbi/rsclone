@@ -70,7 +70,7 @@ class TeamList extends Component {
         {getUser().isAdmin
           ? (
             <Button
-              type="primary"
+              type="register"
               disabled={false}
             >
               <NavLink

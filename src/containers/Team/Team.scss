@@ -10,6 +10,13 @@
   h2 {
     text-align: center;
   }
+  &-table-wrapper{
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow-x: auto;
+  }
   &-game-store-list {
     font-size: 1.2rem;
     background-color: rgba(0,0,0,.7);
@@ -19,6 +26,7 @@
     display: inline-flex;
     list-style: none;
     margin-top: 30px;
+    margin-bottom: 40px;
   }
   &-game-store-item {
     &:nth-child(2) {
@@ -29,11 +37,8 @@
     }
   }
   &-players-table {
-   margin-top: 40px;
    border: 2px solid blanchedalmond;
-   overflow: scroll;
     background-color: rgba(0,0,0,.7);
-    margin-bottom: 30px;
     border-radius: 10px;
     thead {
       td {
@@ -75,5 +80,20 @@
       align-items: center;
       margin-right: 15px;
     }
+  }
+}
+@media (min-width: 320px) and (max-width: 575.98px) {
+  .Team-game-store-list {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+@media (min-width: 320px) and (max-width: 767.98px) {
+  .Team-game-store-list {
+    flex-direction: column;
+    align-items: center;
+  }
+  .Team-table-wrapper {
+    overflow-x: auto;
   }
 }

@@ -9,6 +9,8 @@ import { getCurrentLeague, getUser } from '../../../utils/Cookie/cookie';
 import Edit from '../../components/UI/Edit/Edit';
 import Delete from '../../components/UI/Delete/Delete';
 import Button from '../../components/UI/Button/Button';
+import { store } from '../../../utils/redux/store';
+import { info } from '../../../utils/redux/actions';
 
 class ChoiseTeam extends Component {
   constructor(props) {
@@ -25,6 +27,7 @@ class ChoiseTeam extends Component {
     if (this.props.currentLeague || getCurrentLeague()) {
       const currentLeague = this.props.currentLeague.currentLeague._id || getCurrentLeague()._id;
       this.props.fetchTeamsFromDB(currentLeague);
+      this.checkMinWidth();
     }
   }
 
@@ -33,6 +36,13 @@ class ChoiseTeam extends Component {
       this.getTeamsList();
     }
   }
+
+  checkMinWidth = () => {
+    if (window.innerWidth < 1024) {
+      localStorage.setItem('info', 'Маленький размер экрана');
+      store.dispatch(info('Маленький размер экрана', true));
+    }
+  };
 
   choiceTeam = (isHomeTeam, teamId) => {
     const curTeam = this.props.teams.teams.filter((team) => team._id === teamId);

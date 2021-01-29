@@ -136,86 +136,88 @@ class Team extends Component {
             </li>
           </ul>
         </div>
-        <table className="Team-players-table">
-          <thead>
-            <tr className="Team-players-head-tr">
-              <td>
-                <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label="edit"
-                  onClick={this.sortPlayer.bind(this, 'NAME')}
-                >
-                  Игрок
-                </span>
-              </td>
-              <td>
-                <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label="edit"
-                  onClick={this.sortPlayer.bind(this, 'NUMBER')}
-                >
-                  Номер
-                </span>
-              </td>
-              <td>
-                <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label="edit"
-                  onClick={this.sortPlayer.bind(this, 'GAMEPLAYED')}
-                >
-                  Игр сыграно
-                </span>
-              </td>
-              <td>
-                <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label="edit"
-                  onClick={this.sortPlayer.bind(this, 'GAMESTARTED')}
-                >
-                  Игр в старте
-                </span>
-              </td>
-              <td>
-                <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label="edit"
-                  onClick={this.sortPlayer.bind(this, 'POINTS')}
-                >
-                  Очки
-                </span>
-              </td>
-              <td>
-                <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label="edit"
-                  onClick={this.sortPlayer.bind(this, 'REBOUNDS')}
-                >
-                  Подборы
-                </span>
-              </td>
-              <td>
-                <span
-                  role="button"
-                  tabIndex={0}
-                  aria-label="edit"
-                  onClick={this.sortPlayer.bind(this, 'ASSISTS')}
-                >
-                  Передачи
-                </span>
-              </td>
-            </tr>
-          </thead>
-          <tbody>
-            {this.state.players ? this.getPlayerTableItem() : null}
-          </tbody>
-        </table>
-        {getUser().isAdmin
+        <div className="Team-table-wrapper">
+          <table className="Team-players-table">
+            <thead>
+              <tr className="Team-players-head-tr">
+                <td>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="edit"
+                    onClick={this.sortPlayer.bind(this, 'NAME')}
+                  >
+                    Игрок
+                  </span>
+                </td>
+                <td>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="edit"
+                    onClick={this.sortPlayer.bind(this, 'NUMBER')}
+                  >
+                    Номер
+                  </span>
+                </td>
+                <td>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="edit"
+                    onClick={this.sortPlayer.bind(this, 'GAMEPLAYED')}
+                  >
+                    Игр сыграно
+                  </span>
+                </td>
+                <td>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="edit"
+                    onClick={this.sortPlayer.bind(this, 'GAMESTARTED')}
+                  >
+                    Игр в старте
+                  </span>
+                </td>
+                <td>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="edit"
+                    onClick={this.sortPlayer.bind(this, 'POINTS')}
+                  >
+                    Очки
+                  </span>
+                </td>
+                <td>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="edit"
+                    onClick={this.sortPlayer.bind(this, 'REBOUNDS')}
+                  >
+                    Подборы
+                  </span>
+                </td>
+                <td>
+                  <span
+                    role="button"
+                    tabIndex={0}
+                    aria-label="edit"
+                    onClick={this.sortPlayer.bind(this, 'ASSISTS')}
+                  >
+                    Передачи
+                  </span>
+                </td>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.players ? this.getPlayerTableItem() : null}
+            </tbody>
+          </table>
+        </div>
+        {getUser() && getUser().isAdmin
           ? (
             <Button
               type="register-black"

@@ -4,6 +4,7 @@ import propTypes from 'prop-types';
 /* import Button from '../../containers/components/UI/Button/Button'; */
 import { connect } from 'react-redux';
 import Header from '../../containers/Header/Header';
+import { getUser } from '../../utils/Cookie/cookie';
 /* import Drawer from '../../containers/components/Navigation/Drawer/Drawer'; */
 
 class Layout extends Component {
@@ -14,7 +15,7 @@ class Layout extends Component {
         {/*  {store.getState().token ? <Header /> : null} */}
         {/* eslint-disable-next-line react/prop-types */}
         {Boolean(this.props.token.token) && <Header />}
-        <main>
+        <main style={getUser() ? null : { minHeight: '100vh' }}>
           { this.props.children }
         </main>
 

@@ -10,7 +10,6 @@ import Dialog from '@material-ui/core/Dialog';
 import Button from '@material-ui/core/Button';
 import ButtonUI from '../../components/UI/Button/Button';
 import Playground from '../Playground/Playground';
-// import { createGame, updateTeam } from '../../../utils/API/api';
 import { getCurrentLeague } from '../../../utils/Cookie/cookie';
 import { store } from '../../../utils/redux/store';
 import { info } from '../../../utils/redux/actions';
@@ -19,6 +18,7 @@ import Qarter from '../Quarter/Qarter';
 import { InfoLine } from '../infoLine/InfoLine';
 import { savePlayersFromGame } from '../GameSave/savePlayers';
 import { getPlayersForGameData } from '../GameFunctions/getPlayersForGame';
+import { createGame, updateTeam } from '../../../utils/API/api';
 
 const actions = [
   {
@@ -109,6 +109,7 @@ class Suite extends Component {
     this.startTimerFunc = null;
     this.stopTimerFunc = null;
     this.resetTimerFunc = null;
+    this.quarters = [];
   }
 
   componentDidMount() {
@@ -129,6 +130,13 @@ class Suite extends Component {
     window.removeEventListener('resize', this.checkMinWidth);
   }
 
+  checkMinWidth = () => {
+    if (window.innerWidth < 1024) {
+      localStorage.setItem('info', 'Маленький размер экрана');
+      store.dispatch(info('Маленький размер экрана', true));
+    }
+  };
+
   handleClose = () => {
     this.setState({ open: false });
   }
@@ -143,13 +151,6 @@ class Suite extends Component {
 
   handleSaveOpen = () => {
     this.setState({ saveOpen: true });
-  }
-
-  checkMinWidth = () => {
-    if (window.innerWidth < 1024) {
-      localStorage.setItem('info', 'Маленький размер экрана');
-      store.dispatch(info('Маленький размер экрана', true));
-    }
   }
 
   getActivePlayer = () => this.playersGameProgress.find((player) => player._id === this.state.selectedPlayer._id)
@@ -815,7 +816,7 @@ class Suite extends Component {
       players: this.playersGameProgress,
     };
 
-    /* const teamDataHome = {
+    const teamDataHome = {
       game: {
         played: this.props.homeTeam[0].game.played + 1,
         win: gameData.score_home > gameData.score_visit ? this.props.homeTeam[0].game.win + 1 : this.props.homeTeam[0].game.win,
@@ -826,14 +827,14 @@ class Suite extends Component {
         played: this.props.visitTeam[0].game.played + 1,
         win: gameData.score_visit > gameData.score_home ? this.props.visitTeam[0].game.win + 1 : this.props.visitTeam[0].game.win,
       },
-    }; */
+    };
     try {
-      // updateTeam(this.props.homeTeam[0]._id, teamDataHome);
-      // updateTeam(this.props.visitTeam[0]._id, teamDataVisit);
+      createGame(gameData);
+
+      updateTeam(this.props.homeTeam[0]._id, teamDataHome);
+      updateTeam(this.props.visitTeam[0]._id, teamDataVisit);
 
       savePlayersFromGame(gameData.players);
-
-      // createGame(gameData);
     } catch (e) {
       localStorage.setItem('info', 'Ошибка сохранения');
       store.dispatch(info('Ошибка сохранения', true));
@@ -841,7 +842,6 @@ class Suite extends Component {
   }
 
   render() {
-    console.log(this.playersGameProgress);
     return (
       <div className="Suite">
         { this.state.open

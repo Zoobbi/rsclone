@@ -1,26 +1,20 @@
 import React, { Component } from 'react';
-import './GameHistory.scss';
+import './GameHistoryToPrint.scss';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import ReactToPrint from 'react-to-print';
-import { parseAddresse } from '../../utils/makeAdress/makeAdress';
 import { loadGameFromDB } from '../../utils/redux/reducers/currentGame';
 import getPercent from '../../utils/getPercent/getPercent';
-import ComponentToPrint from '../GameHistoryToPrint/ComponentToPrint';
 
-class GameHistory extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      game_id: undefined,
-    };
+class GameHistoryToPrint extends Component {
+  componentDidMount() {
+
   }
 
-  componentDidMount() {
-    const queries = parseAddresse(this.props);
-    const gameId = this.setKeyIfExist(queries, 'game_id');
-    this.props.fetchGameFromDB(gameId);
+  componentDidUpdate(prevProps) {
+    if (prevProps.gameId !== this.props.gameId) {
+      const gameId = this.setKeyIfExist(this.props.gameId, 'game_id');
+      this.props.fetchGameFromDB(gameId);
+    }
   }
 
   setKeyIfExist = (queries, keyName, asName) => {
@@ -38,11 +32,9 @@ class GameHistory extends Component {
         <td className="text-center">
           {player.number}
         </td>
-        <td>
-          <Link to={`/players/detals?player_id=${player._id}`}>
-            {player.full}
-            {player.start ? <i className="fas fa-basketball-ball" /> : null}
-          </Link>
+        <td className="name">
+          {player.full}
+          {player.start ? <i>*</i> : null}
         </td>
         <td className="text-center">
           {player.time_in_game}
@@ -117,7 +109,7 @@ class GameHistory extends Component {
     <thead>
       <tr>
         <td rowSpan="2">№</td>
-        <td rowSpan="2" className="name">Имя</td>
+        <td rowSpan="2">Имя</td>
         <td rowSpan="2">Время</td>
         <td colSpan="2">С игры</td>
         <td colSpan="2">2</td>
@@ -177,11 +169,7 @@ class GameHistory extends Component {
     return (
       <tr>
         <td colSpan="3">
-          <Link
-            to={`/teams/detals?team_id=${isHomeTeam ? this.props.currentGame.currentGame.team_home : this.props.currentGame.currentGame.team_visit}`}
-          >
-            {isHomeTeam ? this.props.currentGame.currentGame.team_home_name : this.props.currentGame.currentGame.team_visit_name}
-          </Link>
+          <strong>{isHomeTeam ? this.props.currentGame.currentGame.team_home_name : this.props.currentGame.currentGame.team_visit_name}</strong>
         </td>
         <td>
           {madeTotalShots}
@@ -273,52 +261,36 @@ class GameHistory extends Component {
 
   render() {
     return (
-      <section className="GameHistory">
-        <div className="GameHistory-content">
-          <div className="">
-            <ReactToPrint
-              trigger={() => <i className="print fas fa-print" />}
-              content={() => this.componentRef}
-            />
-          </div>
-          <h2>
-            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_visit_name : 'Гости ' }
+        <section className="GameHistoryToPrint">
+          <div className="GameHistoryToPrint-content">
+            <h2>
+              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_visit_name : 'Гости ' }
             &nbsp;
-            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_visit : '0' }
+              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_visit : '0' }
             &nbsp;&nbsp;-&nbsp;&nbsp;
-            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_home : '0' }
+              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_home : '0' }
             &nbsp;
-            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_home_name : 'Хозяева ' }
-          </h2>
-          <div className="GameHistory-visit">
+              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_home_name : 'Хозяева ' }
+            </h2>
+            <div className="GameHistoryToPrint-visit">
+              <table>
+                {this.getTableHeaders()}
+                <tbody>
+                  {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_visit) : null }
+                  {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_visit) : null }
+                </tbody>
+              </table>
+            </div>
+            <div className="GameHistoryToPrint-home" />
             <table>
               {this.getTableHeaders()}
               <tbody>
-                {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_visit) : null }
-                {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_visit) : null }
+                {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_home) : null }
+                {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_home) : null }
               </tbody>
             </table>
           </div>
-          <div className="GameHistory-home" />
-          <table>
-            {this.getTableHeaders()}
-            <tbody>
-              {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_home) : null }
-              {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_home) : null }
-            </tbody>
-          </table>
-        </div>
-        <div style={{ display: ' none ' }}>
-          <ComponentToPrint
-            ref={(el) => {
-              this.componentRef = el;
-              // eslint-disable-next-line no-return-assign
-              return this.componentRef;
-            }}
-            gameId={this.state.game_id ? this.state.game_id : undefined}
-          />
-        </div>
-      </section>
+        </section>
     );
   }
 }
@@ -333,15 +305,17 @@ const mapStateToProps = (state) => ({
   currentGame: state.currentGame,
 });
 
-GameHistory.defaultProps = {
+GameHistoryToPrint.defaultProps = {
   fetchGameFromDB: 'null',
   currentGame: [],
+  gameId: undefined,
 };
 
-GameHistory.propTypes = {
+GameHistoryToPrint.propTypes = {
   fetchGameFromDB: propTypes.func,
   // eslint-disable-next-line react/forbid-prop-types
   currentGame: propTypes.object,
+  gameId: propTypes.string,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GameHistory);
+export default connect(mapStateToProps, mapDispatchToProps)(GameHistoryToPrint);

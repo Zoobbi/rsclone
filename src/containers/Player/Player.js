@@ -28,6 +28,46 @@ class Player extends Component {
 
   isCurrentPlayer = () => !!this.props.currentPlayer.currentPlayer;
 
+  getStat = (title, ABBR, total, perGame) => (
+    <div className="Player-stats-item">
+      <div title={title} className="ABBR">{ABBR}</div>
+      <div title="Всего" className="total">{total}</div>
+      <div title="За игру" className="per_game">{perGame}</div>
+    </div>
+  );
+
+  getShootingStat = (title, ABBR, stat) => {
+    let statPath = '-';
+    if (this.isCurrentPlayer()) {
+      statPath = this.props.currentPlayer.currentPlayer.stats[stat];
+    }
+    return (
+      <div>
+        <div className="Player-stats-shoot_item">
+          <div title={title} className="ABBR">{ABBR}</div>
+          <div className="content">
+            <div className="item-wrapper">
+              <div title="Всего" className="total">total</div>
+              <div title="Всего" className="total">{statPath.total}</div>
+            </div>
+            <div className="item-wrapper">
+              <div title="Забито" className="made">made</div>
+              <div title="Забито" className="made">{statPath.made}</div>
+            </div>
+            <div className="item-wrapper">
+              <div title="Промазано" className="miss">miss</div>
+              <div title="Промазано" className="miss">{statPath.missed}</div>
+            </div>
+            <div className="item-wrapper">
+              <div title="Процент попадания" className="percent">percent</div>
+              <div title="Процент попадания" className="percent">{statPath.percent}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   render() {
     const player = this.isCurrentPlayer() ? this.props.currentPlayer.currentPlayer : null;
     return (
@@ -45,94 +85,43 @@ class Player extends Component {
             {player ? player.team.name : 'Команда'}
             &quot;
           </p>
+          <div>
+            Игр сыграно:&nbsp;
+            {player ? player.stats.game_played : '-'}
+          </div>
+          <div>
+            Игр в старте:&nbsp;
+            {player ? player.stats.game_started : '-'}
+          </div>
         </div>
-
         <div className="Player-stats-container">
-          <table className="Player-stats-metric">
-            <thead>
-              <tr>
-                <td title="Очки">pts</td>
-                <td title="Подборы в защите">dr</td>
-                <td title="Подборы в нападении">or</td>
-                <td title="Подборы">reb</td>
-                <td title="Передачи">ast</td>
-                <td title="Перехваты">stl</td>
-                <td title="Блокшоты">blk</td>
-                <td title="Потери">to</td>
-                <td title="Получено фолов игроком">gpf</td>
-                <td title="Получено фолов на игроке">tpf</td>
-                <td title="Соотношение передач к потерям">ast/to</td>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{player ? player.stats.points.total : '-'}</td>
-                <td>{player ? player.stats.rebound.defence.total : '-'}</td>
-                <td>{player ? player.stats.rebound.offence.total : '-'}</td>
-                <td>{player ? player.stats.rebound.total : '-'}</td>
-                <td>{player ? player.stats.assists.total : '-'}</td>
-                <td>{player ? player.stats.steals.total : '-'}</td>
-                <td>{player ? player.stats.blocks.total : '-'}</td>
-                <td>{player ? player.stats.turnover.total : '-'}</td>
-                <td>{player ? player.stats.fouls.take.total : '-'}</td>
-                <td>{player ? player.stats.fouls.give.total : '-'}</td>
-                <td>{player ? player.stats.assists.ast_to_to : '-'}</td>
-              </tr>
-              <tr>
-                <td>{player ? player.stats.points.per_game : '-'}</td>
-                <td>{player ? player.stats.rebound.defence.per_game : '-'}</td>
-                <td>{player ? player.stats.rebound.offence.per_game : '-'}</td>
-                <td>{player ? player.stats.rebound.per_game : '-'}</td>
-                <td>{player ? player.stats.assists.per_game : '-'}</td>
-                <td>{player ? player.stats.steals.per_game : '-'}</td>
-                <td>{player ? player.stats.blocks.per_game : '-'}</td>
-                <td>{player ? player.stats.turnover.per_game : '-'}</td>
-                <td>{player ? player.stats.fouls.take.per_game : '-'}</td>
-                <td>{player ? player.stats.fouls.give.per_game : '-'}</td>
-                <td>{player ? player.stats.assists.ast_to_to : '-'}</td>
-              </tr>
-            </tbody>
-          </table>
+          {this.getStat('Очки', 'pts', (player ? player.stats.points.total : '-'), (player ? player.stats.points.per_game : '-'))}
+          {this.getStat('Подборы в защите', 'dr',
+            (player ? player.stats.rebound.defence.total : '-'), (player ? player.stats.rebound.defence.per_game : '-'))}
+          {this.getStat('Подборы в нападении', 'or',
+            (player ? player.stats.rebound.offence.total : '-'), (player ? player.stats.rebound.offence.per_game : '-'))}
+          {this.getStat('Подборы', 'reb', (player ? player.stats.rebound.total : '-'), (player ? player.stats.rebound.per_game : '-'))}
+          {this.getStat('Передачи', 'ast', (player ? player.stats.assists.total : '-'), (player ? player.stats.assists.per_game : '-'))}
+          {this.getStat('Перехваты', 'stl', (player ? player.stats.steals.total : '-'), (player ? player.stats.steals.per_game : '-'))}
+          {this.getStat('Блокшоты', 'blk', (player ? player.stats.blocks.total : '-'), (player ? player.stats.blocks.per_game : '-'))}
+          {this.getStat('Потери', 'to', (player ? player.stats.turnover.total : '-'), (player ? player.stats.turnover.per_game : '-'))}
+          {this.getStat('Получено фолов игроком', 'gpf',
+            (player ? player.stats.fouls.give.total : '-'), (player ? player.stats.fouls.give.per_game : '-'))}
+          {this.getStat('Получено фолов на игроке', 'tpf',
+            (player ? player.stats.fouls.take.total : '-'), (player ? player.stats.fouls.take.per_game : '-'))}
+          {this.getStat('Соотношение передач к потерям', 'ast/to', (player ? player.stats.assists.ast_to_to : '-'),
+            ('-'))}
+          {this.getStat(
+            '(Очки + Подборы + Передачи + Перехваты + Блоки + Фолы на себе) - (Промахи с игры + Промахи со штрафной + Потери +  Фолы свои)',
+            'pir', (player ? player.stats.PIR : '-'),
+            ('-'),
+          )}
         </div>
-        <table className="Player-stats-shoot">
-          <thead>
-            <tr>
-              <td colSpan="4">2 pts</td>
-              <td colSpan="4">3 pts</td>
-              <td colSpan="4">ft</td>
-            </tr>
-            <tr>
-              <td>total</td>
-              <td>made</td>
-              <td>miss</td>
-              <td>percent</td>
-              <td>total</td>
-              <td>made</td>
-              <td>miss</td>
-              <td>percent</td>
-              <td>total</td>
-              <td>made</td>
-              <td>miss</td>
-              <td>percent</td>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{player ? player.stats.two_points.total : '-'}</td>
-              <td>{player ? player.stats.two_points.made : '-'}</td>
-              <td>{player ? player.stats.two_points.missed : '-'}</td>
-              <td>{player ? player.stats.two_points.percent : '-'}</td>
-              <td>{player ? player.stats.three_points.total : '-'}</td>
-              <td>{player ? player.stats.three_points.made : '-'}</td>
-              <td>{player ? player.stats.three_points.missed : '-'}</td>
-              <td>{player ? player.stats.three_points.percent : '-'}</td>
-              <td>{player ? player.stats.FT.total : '-'}</td>
-              <td>{player ? player.stats.FT.made : '-'}</td>
-              <td>{player ? player.stats.FT.missed : '-'}</td>
-              <td>{player ? player.stats.FT.percent : '-'}</td>
-            </tr>
-          </tbody>
-        </table>
+        <div className="Player-stats-shoot-wrapper">
+          {this.getShootingStat('2-x очковые', '2 pts', 'two_points')}
+          {this.getShootingStat('3-x очковые', '3 pts', 'three_points')}
+          {this.getShootingStat('штрафные', 'ft', 'FT')}
+        </div>
       </section>
     );
   }

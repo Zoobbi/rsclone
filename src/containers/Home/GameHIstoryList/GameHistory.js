@@ -17,6 +17,9 @@ class GameHistory extends Component {
     if (this.props.league_id !== prevProps.league_id) {
       this.props.fetchGamesFromDB(this.props.league_id);
     }
+    if (!this.props.games.games) {
+      this.props.fetchGamesFromDB(this.props.league_id);
+    }
   }
 
   showGamesList = () => this.props.games.games.map((game) => {

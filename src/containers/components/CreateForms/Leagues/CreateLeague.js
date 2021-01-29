@@ -49,9 +49,8 @@ class CreateLeague extends Component {
 
     if (validation.nameRures) {
       // eslint-disable-next-line no-useless-escape
-      isValid = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$/.test(value);
+      // isValid = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$/.test(value);
     }
-
     return isValid;
   };
 
