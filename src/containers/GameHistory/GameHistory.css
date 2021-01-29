@@ -8,6 +8,13 @@
   align-items: center;
   color: #ffffff;
 }
+.GameHistory .header-line {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.GameHistory .quarter-score {
+  padding: 5px;
+}
 .GameHistory-content {
   position: relative;
   background-color: rgba(0, 0, 0, 0.7);
@@ -30,7 +37,7 @@
 }
 .GameHistory-content h2 {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 .GameHistory table {
   width: 100%;

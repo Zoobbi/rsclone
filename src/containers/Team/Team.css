@@ -58,6 +58,7 @@
 .Team-players-table td {
   text-align: center;
   color: #fff;
+  min-width: 20px;
 }
 .Team-players-table td a {
   padding: 5px 8px;

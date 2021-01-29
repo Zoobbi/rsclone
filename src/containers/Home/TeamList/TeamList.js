@@ -9,6 +9,7 @@ import { getUser } from '../../../utils/Cookie/cookie';
 import Edit from '../../components/UI/Edit/Edit';
 import Delete from '../../components/UI/Delete/Delete';
 import { removeTeam } from '../../../utils/API/api';
+import { Loader } from '../../components/UI/Loader/Loader';
 
 class TeamList extends Component {
   constructor(props) {
@@ -45,17 +46,20 @@ class TeamList extends Component {
                   />
                   <Delete
                     deleteItem={team.name}
-                    onDelete={() => this.removeTeam(team._id)}
+                    onDelete={() => {
+                      removeTeam(team._id);
+                      this.props.fetchTeamsFromDB(this.props.league_id);
+                    }}
                   />
                 </div>
               )
-              : null
+              : <li>команды не найдены</li>
           }
         </li>
       ));
       return teams;
     }
-    return (<li>команды не найдены</li>);
+    return (<Loader />);
   }
 
   render() {

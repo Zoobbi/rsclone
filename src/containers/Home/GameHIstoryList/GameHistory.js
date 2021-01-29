@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import { loadGamesFromDB } from '../../../utils/redux/reducers/games';
+import { getUser } from '../../../utils/Cookie/cookie';
+import Delete from '../../components/UI/Delete/Delete';
+import { removeGame } from '../../../utils/API/api';
 
 class GameHistory extends Component {
   constructor(props) {
@@ -36,6 +39,19 @@ class GameHistory extends Component {
           </span>
           <span className="GameHistoryAll-date">{`${date.getDate()} - ${date.getMonth() + 1} - ${date.getFullYear()}`}</span>
         </Link>
+        {
+          getUser().isAdmin
+            ? (
+              <Delete
+                deleteItem={`${game.team_visit_name}-${game.team_home_name}`}
+                onDelete={() => {
+                  removeGame(game._id);
+                  this.props.fetchGamesFromDB(this.props.league_id);
+                }}
+              />
+            )
+            : null
+        }
       </li>
     );
   })

@@ -4,6 +4,7 @@ import propTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { parseAddresse } from '../../utils/makeAdress/makeAdress';
 import { loadPlayerFromDB } from '../../utils/redux/reducers/currentPlayer';
+import Playground from './Playground/Playground';
 
 class Player extends Component {
   constructor() {
@@ -122,6 +123,9 @@ class Player extends Component {
           {this.getShootingStat('3-x очковые', '3 pts', 'three_points')}
           {this.getShootingStat('штрафные', 'ft', 'FT')}
         </div>
+        <Playground
+          player={this.isCurrentPlayer() ? this.props.currentPlayer.currentPlayer : undefined}
+        />
       </section>
     );
   }

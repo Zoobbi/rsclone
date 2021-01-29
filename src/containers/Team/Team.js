@@ -69,7 +69,10 @@ class Team extends Component {
                 />
                 <Delete
                   deleteItem={player.name.full}
-                  onDelete={() => this.removePlayer(player._id)}
+                  onDelete={() => {
+                    this.removePlayer(player._id);
+                    this.props.fetchTeamFromDB(this.state.team_id);
+                  }}
                 />
               </div>
             )

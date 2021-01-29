@@ -261,36 +261,36 @@ class GameHistoryToPrint extends Component {
 
   render() {
     return (
-        <section className="GameHistoryToPrint">
-          <div className="GameHistoryToPrint-content">
-            <h2>
-              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_visit_name : 'Гости ' }
+      <section className="GameHistoryToPrint">
+        <div className="GameHistoryToPrint-content">
+          <h2>
+            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_visit_name : 'Гости ' }
             &nbsp;
-              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_visit : '0' }
+            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_visit : '0' }
             &nbsp;&nbsp;-&nbsp;&nbsp;
-              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_home : '0' }
+            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_home : '0' }
             &nbsp;
-              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_home_name : 'Хозяева ' }
-            </h2>
-            <div className="GameHistoryToPrint-visit">
-              <table>
-                {this.getTableHeaders()}
-                <tbody>
-                  {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_visit) : null }
-                  {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_visit) : null }
-                </tbody>
-              </table>
-            </div>
-            <div className="GameHistoryToPrint-home" />
+            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_home_name : 'Хозяева ' }
+          </h2>
+          <div className="GameHistoryToPrint-visit">
             <table>
               {this.getTableHeaders()}
               <tbody>
-                {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_home) : null }
-                {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_home) : null }
+                {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_visit) : null }
+                {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_visit) : null }
               </tbody>
             </table>
           </div>
-        </section>
+          <div className="GameHistoryToPrint-home" />
+          <table>
+            {this.getTableHeaders()}
+            <tbody>
+              {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_home) : null }
+              {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_home) : null }
+            </tbody>
+          </table>
+        </div>
+      </section>
     );
   }
 }

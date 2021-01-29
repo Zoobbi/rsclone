@@ -162,6 +162,21 @@
     bottom: 0;
     right: 10px;
   }
+  .fullscreen-btn {
+    font-size: 2rem;
+    background-color: transparent;
+    outline: none;
+    border:none;
+    color: #ffffff;
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    cursor: pointer;
+    transition: .4s;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 }
 .Suite .text-right {
   text-align: right;
@@ -204,4 +219,7 @@
   &-wrapper {
     display: flex;
   }
+}
+.fullscreen-enabled .Suite {
+  background: linear-gradient(180deg, #11998e 0%, #38ef7d 100%);;
 }

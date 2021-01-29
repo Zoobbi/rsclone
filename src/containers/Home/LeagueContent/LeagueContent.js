@@ -34,7 +34,10 @@ class LeagueContent extends Component {
                  />
                  <Delete
                    deleteItem={item.name}
-                   onDelete={() => this.removeLeague(item._id)}
+                   onDelete={() => {
+                     this.removeLeague(item._id);
+                     this.props.fetchLeaguesFromDB();
+                   }}
                  />
                </div>
              )

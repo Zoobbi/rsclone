@@ -101,6 +101,17 @@ export const removeTeam = async (id) => {
   }
 };
 
+export const removeGame = async (id) => {
+  try {
+    const response = await axios.delete(`${localhost}games/${id}`, { headers: { Authorization: ` ${store.getState().token.token}` } });
+    localStorage.setItem('info', response.data.message);
+    store.dispatch(info(response.data.message, false));
+  } catch (e) {
+    localStorage.setItem('info', e.response.data.message);
+    store.dispatch(info(e.response.data.message, false));
+  }
+};
+
 export const removePlayer = async (id) => {
   try {
     const response = await axios.delete(`${localhost}players/${id}`, { headers: { Authorization: ` ${store.getState().token.token}` } });

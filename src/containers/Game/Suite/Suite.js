@@ -19,6 +19,7 @@ import { InfoLine } from '../infoLine/InfoLine';
 import { savePlayersFromGame } from '../GameSave/savePlayers';
 import { getPlayersForGameData } from '../GameFunctions/getPlayersForGame';
 import { createGame, updateTeam } from '../../../utils/API/api';
+import { SuiteWrapper } from '../SuiteWrapper/SuiteWrapper';
 
 const actions = [
   {
@@ -102,14 +103,17 @@ class Suite extends Component {
       inGameVisit: [],
       inGameHome: [],
       quarter: 1,
+      quartersScore: [[], [], [], []],
       actionMessage: '',
       isTimerPlay: false,
+      isFullScreen: false,
     };
     this.playersGameProgress = [];
     this.startTimerFunc = null;
     this.stopTimerFunc = null;
     this.resetTimerFunc = null;
     this.quarters = [];
+    this.fullScreenEnter = () => {};
   }
 
   componentDidMount() {
@@ -798,13 +802,38 @@ class Suite extends Component {
     }
   };
 
-  changeQuarter = (quarter) => {
+  changeQuarter = (curQuarter) => {
+    const quarter = parseInt(curQuarter, 10);
+    const { quartersScore } = this.state;
+
+    if (quarter === 2) {
+      quartersScore[0] = [this.state.visitScore, this.state.homeScore];
+    }
+
+    if (quarter === 3) {
+      quartersScore[1] = [this.state.visitScore - quartersScore[0][0], this.state.homeScore - quartersScore[0][1]];
+    }
+
+    if (quarter === 4) {
+      quartersScore[2] = [this.state.visitScore - (quartersScore[0][0] + quartersScore[1][0]),
+        this.state.homeScore - (quartersScore[0][1] + quartersScore[1][1])];
+    }
+
     this.setState({
       quarter,
+      quartersScore,
     });
   }
 
   saveGameData = () => {
+    const { quartersScore } = this.state;
+    quartersScore[3] = [this.state.visitScore - (quartersScore[0][0] + quartersScore[1][0] + quartersScore[2][0]),
+      this.state.homeScore - (quartersScore[0][1] + quartersScore[1][1] + quartersScore[2][1])];
+
+    this.setState({
+      quartersScore,
+    });
+
     const gameData = {
       league: getCurrentLeague()._id,
       team_home: this.props.homeTeam[0]._id,
@@ -813,6 +842,7 @@ class Suite extends Component {
       team_visit_name: this.props.visitTeam[0].name,
       score_home: this.state.homeScore,
       score_visit: this.state.visitScore,
+      quarters: this.state.quartersScore,
       players: this.playersGameProgress,
     };
 
@@ -841,10 +871,28 @@ class Suite extends Component {
     }
   }
 
+  fullscreenHandler = (handler) => {
+    console.log(handler);
+    if (handler) {
+      this.fullScreenEnter = handler;
+    }
+    /* this.fullScreenExit = exit; */
+    // handle.enter
+  }
+
+  onChangeFullScreen = (isFullScreen) => this.setState({ isFullScreen });
+
   render() {
     return (
-      <div className="Suite">
-        { this.state.open
+      <SuiteWrapper
+        fullscreenHandler={this.fullscreenHandler}
+        fullscreenOnChange={this.onChangeFullScreen}
+      >
+        <div className="Suite">
+          <button title="полноэкранный режим. ESC выход" className="fullscreen-btn" onClick={this.fullScreenEnter}>
+            <i className="fas fa-expand" />
+          </button>
+          { this.state.open
         && (
           <Dialog
             open={this.state.open}
@@ -882,7 +930,7 @@ class Suite extends Component {
             </DialogActions>
           </Dialog>
         )}
-        { this.state.saveOpen
+          { this.state.saveOpen
         && (
           <Dialog
             open={this.state.saveOpen}
@@ -917,201 +965,202 @@ class Suite extends Component {
             </DialogActions>
           </Dialog>
         )}
-        <Substitution
-          location="left"
-          isShow={this.state.isHomeSubsShow ? 'left-show' : ''}
-          players={this.getSubstitutionPlayers(true)}
-          onSubsPlayer={this.subsitutePlayer}
-        />
-        <Substitution
-          location="right"
-          isShow={this.state.isVisitSubsShow ? 'right-show' : ''}
-          players={this.getSubstitutionPlayers(false)}
-          onSubsPlayer={this.subsitutePlayer}
-        />
-        <div className="Suite-top-line">
-          <div className="Suite-team">
-            <div>
-              <div className="Suite-team-name">
-                {this.props.visitTeam[0].name}
-              </div>
-              <div className="Suite-team-fouls">
-                <div className="Suite-team-null">
-                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-                  <i
-                    role="button"
-                    tabIndex={0}
-                    aria-label="reset"
-                    className="fas fa-angle-double-down"
-                    onClick={this.resetTeamFouls.bind(this, false)}
-                  />
-                </div>
-                {this.showTeamFouls(false)}
-              </div>
-              <div className="Suite-team-timeouts">
-                <div className="Suite-team-null">
-                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-                  <i
-                    role="button"
-                    tabIndex={0}
-                    aria-label="reset"
-                    className="fas fa-angle-double-down"
-                    onClick={this.resetTimeouts.bind(this, false)}
-                  />
-                </div>
-                {this.showTimeouts(false)}
-              </div>
-            </div>
-            <div className="Suite-team-score">{this.state.visitScore}</div>
-          </div>
-
-          <div>
-            <Qarter
-              disabled={this.state.isTimerPlay}
-              onQarterChange={this.changeQuarter}
-            />
-            <Timer
-              initialTime={600000}
-              direction="backward"
-              startImmediately={false}
-            >
-              {({
-                start, stop, reset,
-              }) => {
-                this.startTimerFunc = start;
-                this.stopTimerFunc = stop;
-                this.resetTimerFunc = reset;
-
-                return (
-                  <>
-                    <div className="timer-wrapper">
-                      <div className="timer-control">
-                        <button
-                          className="timer-control-btn__start"
-                          title={this.state.isTimerPlay ? 'СТОП' : 'СТАРТ'}
-                          onClick={() => {
-                            this.setState({
-                              isTimerPlay: !this.state.isTimerPlay,
-                            });
-                            if (this.state.isTimerPlay) {
-                              stop();
-                            } else {
-                              start();
-                            }
-                          }}
-                        >
-                          {this.state.isTimerPlay ? <i className="fas fa-pause" /> : <i className="fas fa-play" />}
-                        </button>
-                        <button
-                          className="timer-control-btn__start"
-                          onClick={() => {
-                            this.handleOpen();
-                          }}
-                        >
-                          <i className="fas fa-undo" />
-                        </button>
-                      </div>
-                      <div className="timer-time">
-                        <div className="timer timer-min">
-                          <Timer.Minutes
-                            formatValue={(text) => (text.toString().length > 1 ? text : `0${text}`)}
-                          />
-                          :
-                        </div>
-                        <div className="timer timer-sec">
-                          <Timer.Seconds
-                            formatValue={(text) => (text.toString().length > 1 ? text : `0${text}`)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                );
-              }}
-            </Timer>
-            {this.state.actionMessage ? <InfoLine message={this.state.actionMessage} /> : null}
-          </div>
-
-          <div className="Suite-team">
-            <div className="Suite-team-score">{this.state.homeScore}</div>
-            <div>
-              <div className="Suite-team-name text-right">
-                {this.props.homeTeam[0].name}
-              </div>
-              <div className="Suite-team-fouls">
-                {this.showTeamFouls(true)}
-                <div className="Suite-team-null">
-                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-                  <i
-                    role="button"
-                    tabIndex={0}
-                    aria-label="reset"
-                    className="fas fa-angle-double-down"
-                    onClick={this.resetTeamFouls.bind(this, true)}
-                  />
-                </div>
-              </div>
-              <div className="Suite-team-timeouts">
-                {this.showTimeouts(true)}
-                <div className="Suite-team-null">
-                  {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
-                  <i
-                    role="button"
-                    tabIndex={0}
-                    aria-label="reset"
-                    className="fas fa-angle-double-down"
-                    onClick={this.resetTimeouts.bind(this, true)}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="Suite-main">
-          <div className="Suite-player-wrap">
-            <div className="start-line">
-              <ButtonUI
-                type="Suite-player-substitution"
-                title="замена гостей"
-                disabled={this.state.isTimerPlay}
-                OnBtnclick={() => { this.toggleSubstitution(false); }}
-              >
-                <i className="fas fa-exchange-alt" />
-              </ButtonUI>
-              {this.showStartLines(false)}
-            </div>
-            <div className="start-line">
-              {this.showStartLines(true)}
-              <ButtonUI
-                type="Suite-player-substitution"
-                title="замена гостей"
-                disabled={this.state.isTimerPlay}
-                OnBtnclick={() => { this.toggleSubstitution(true); }}
-              >
-                <i className="fas fa-exchange-alt" />
-              </ButtonUI>
-            </div>
-          </div>
-          <div className="Suite-actions">
-            {this.showActions()}
-          </div>
-        </div>
-        <div className="Suite-playground">
-          <Playground
-            isPlayerSelected={!!this.state.selectedPlayer}
-            sectorClick={this.shootSectorHandler}
+          <Substitution
+            location="left"
+            isShow={this.state.isHomeSubsShow ? 'left-show' : ''}
+            players={this.getSubstitutionPlayers(true)}
+            onSubsPlayer={this.subsitutePlayer}
           />
+          <Substitution
+            location="right"
+            isShow={this.state.isVisitSubsShow ? 'right-show' : ''}
+            players={this.getSubstitutionPlayers(false)}
+            onSubsPlayer={this.subsitutePlayer}
+          />
+          <div className="Suite-top-line">
+            <div className="Suite-team">
+              <div>
+                <div className="Suite-team-name">
+                  {this.props.visitTeam[0].name}
+                </div>
+                <div className="Suite-team-fouls">
+                  <div className="Suite-team-null">
+                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+                    <i
+                      role="button"
+                      tabIndex={0}
+                      aria-label="reset"
+                      className="fas fa-angle-double-down"
+                      onClick={this.resetTeamFouls.bind(this, false)}
+                    />
+                  </div>
+                  {this.showTeamFouls(false)}
+                </div>
+                <div className="Suite-team-timeouts">
+                  <div className="Suite-team-null">
+                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+                    <i
+                      role="button"
+                      tabIndex={0}
+                      aria-label="reset"
+                      className="fas fa-angle-double-down"
+                      onClick={this.resetTimeouts.bind(this, false)}
+                    />
+                  </div>
+                  {this.showTimeouts(false)}
+                </div>
+              </div>
+              <div className="Suite-team-score">{this.state.visitScore}</div>
+            </div>
+
+            <div>
+              <Qarter
+                disabled={this.state.isTimerPlay}
+                onQarterChange={this.changeQuarter}
+              />
+              <Timer
+                initialTime={600000}
+                direction="backward"
+                startImmediately={false}
+              >
+                {({
+                  start, stop, reset,
+                }) => {
+                  this.startTimerFunc = start;
+                  this.stopTimerFunc = stop;
+                  this.resetTimerFunc = reset;
+
+                  return (
+                    <>
+                      <div className="timer-wrapper">
+                        <div className="timer-control">
+                          <button
+                            className="timer-control-btn__start"
+                            title={this.state.isTimerPlay ? 'СТОП' : 'СТАРТ'}
+                            onClick={() => {
+                              this.setState({
+                                isTimerPlay: !this.state.isTimerPlay,
+                              });
+                              if (this.state.isTimerPlay) {
+                                stop();
+                              } else {
+                                start();
+                              }
+                            }}
+                          >
+                            {this.state.isTimerPlay ? <i className="fas fa-pause" /> : <i className="fas fa-play" />}
+                          </button>
+                          <button
+                            className="timer-control-btn__start"
+                            onClick={() => {
+                              this.handleOpen();
+                            }}
+                          >
+                            <i className="fas fa-undo" />
+                          </button>
+                        </div>
+                        <div className="timer-time">
+                          <div className="timer timer-min">
+                            <Timer.Minutes
+                              formatValue={(text) => (text.toString().length > 1 ? text : `0${text}`)}
+                            />
+                            :
+                          </div>
+                          <div className="timer timer-sec">
+                            <Timer.Seconds
+                              formatValue={(text) => (text.toString().length > 1 ? text : `0${text}`)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  );
+                }}
+              </Timer>
+              {this.state.actionMessage ? <InfoLine message={this.state.actionMessage} /> : null}
+            </div>
+
+            <div className="Suite-team">
+              <div className="Suite-team-score">{this.state.homeScore}</div>
+              <div>
+                <div className="Suite-team-name text-right">
+                  {this.props.homeTeam[0].name}
+                </div>
+                <div className="Suite-team-fouls">
+                  {this.showTeamFouls(true)}
+                  <div className="Suite-team-null">
+                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+                    <i
+                      role="button"
+                      tabIndex={0}
+                      aria-label="reset"
+                      className="fas fa-angle-double-down"
+                      onClick={this.resetTeamFouls.bind(this, true)}
+                    />
+                  </div>
+                </div>
+                <div className="Suite-team-timeouts">
+                  {this.showTimeouts(true)}
+                  <div className="Suite-team-null">
+                    {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
+                    <i
+                      role="button"
+                      tabIndex={0}
+                      aria-label="reset"
+                      className="fas fa-angle-double-down"
+                      onClick={this.resetTimeouts.bind(this, true)}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="Suite-main">
+            <div className="Suite-player-wrap">
+              <div className="start-line">
+                <ButtonUI
+                  type="Suite-player-substitution"
+                  title="замена гостей"
+                  disabled={this.state.isTimerPlay}
+                  OnBtnclick={() => { this.toggleSubstitution(false); }}
+                >
+                  <i className="fas fa-exchange-alt" />
+                </ButtonUI>
+                {this.showStartLines(false)}
+              </div>
+              <div className="start-line">
+                {this.showStartLines(true)}
+                <ButtonUI
+                  type="Suite-player-substitution"
+                  title="замена гостей"
+                  disabled={this.state.isTimerPlay}
+                  OnBtnclick={() => { this.toggleSubstitution(true); }}
+                >
+                  <i className="fas fa-exchange-alt" />
+                </ButtonUI>
+              </div>
+            </div>
+            <div className="Suite-actions">
+              {this.showActions()}
+            </div>
+          </div>
+          <div className="Suite-playground">
+            <Playground
+              isPlayerSelected={!!this.state.selectedPlayer}
+              sectorClick={this.shootSectorHandler}
+            />
+          </div>
+          <div className="save-btn-wrapper">
+            <ButtonUI
+              type="primary"
+              disabled={this.state.isTimerPlay}
+              OnBtnclick={this.handleSaveOpen}
+            >
+              Save
+            </ButtonUI>
+          </div>
         </div>
-        <div className="save-btn-wrapper">
-          <ButtonUI
-            type="primary"
-            disabled={this.state.isTimerPlay}
-            OnBtnclick={this.handleSaveOpen}
-          >
-            Save
-          </ButtonUI>
-        </div>
-      </div>
+      </SuiteWrapper>
     );
   }
 }

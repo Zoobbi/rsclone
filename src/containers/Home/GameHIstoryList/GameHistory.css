@@ -17,6 +17,7 @@
   display: flex;
   padding: 5px 0;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid #cccccc;
 }
 .GameHistoryAll-item a {
@@ -33,4 +34,4 @@
   color: black;
 }
 
-/*# sourceMappingURL=GameHistoryToPrint.cssint.css.map */
+/*# sourceMappingURL=GameHistory.css.map */
