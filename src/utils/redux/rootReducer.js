@@ -15,6 +15,8 @@ import currentPlayer from './reducers/currentPlayer';
 import games from './reducers/games';
 // eslint-disable-next-line import/no-cycle
 import currentGame from './reducers/currentGame';
+// eslint-disable-next-line import/no-cycle
+import histories from './reducers/histories';
 
 export default combineReducers({
   token,
@@ -26,4 +28,5 @@ export default combineReducers({
   currentPlayer,
   games,
   currentGame,
+  histories,
 });

@@ -1,0 +1,18 @@
+@keyframes loader {
+  from {
+    color: #fff;
+    transform: rotate(0deg);
+  }
+  to {
+    color: orange;
+    transform: rotate(360deg);
+  }
+}
+.Loader {
+  font-size: 3rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: 2s infinite linear loader;
+}

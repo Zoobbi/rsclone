@@ -15,6 +15,7 @@ const links = [
 
 if (getUser() && getUser().isAdmin) {
   links.push({ to: '/game', label: 'Игра', exact: false });
+  links.push({ to: '/histories', label: 'История', exact: false });
 }
 
 class Drawer extends Component {

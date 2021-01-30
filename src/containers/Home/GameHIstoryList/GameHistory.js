@@ -7,6 +7,7 @@ import { loadGamesFromDB } from '../../../utils/redux/reducers/games';
 import { getUser } from '../../../utils/Cookie/cookie';
 import Delete from '../../components/UI/Delete/Delete';
 import { removeGame } from '../../../utils/API/api';
+import { Loader } from '../../components/UI/Loader/Loader';
 
 class GameHistory extends Component {
   constructor(props) {
@@ -61,7 +62,7 @@ class GameHistory extends Component {
       <div className="GameHistoryAll">
         <h2>Game History</h2>
         <ul className="GameHistory-list">
-          {this.props.games.games ? this.showGamesList() : null}
+          {this.props.games.games ? this.showGamesList() : <Loader />}
         </ul>
       </div>
     );

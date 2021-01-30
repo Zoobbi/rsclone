@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import propTypes from 'prop-types';
 import index from 'radium/es/plugins';
 import { Link } from 'react-router-dom';
+import { Loader } from '../../components/UI/Loader/Loader';
 
 class TopList extends Component {
   constructor() {
@@ -48,8 +49,6 @@ class TopList extends Component {
     const players = this.sortTopPlayers();
     const topPlayers = players.slice(0, 5);
     const { category } = this.state;
-
-    console.log(topPlayers);
     const result = topPlayers.map((player) => (
       <tr
         key={player._id + index}
@@ -79,18 +78,25 @@ class TopList extends Component {
           <option value="blocks">блоки</option>
           <option value="turnover">потери</option>
         </select>
-        <table className="TopList-table">
-          <thead>
-            <tr>
-              <td>Игрок</td>
-              <td>за игру</td>
-              <td>всего</td>
-            </tr>
-          </thead>
-          <tbody>
-            {this.showTopList()}
-          </tbody>
-        </table>
+        {
+          this.props.teams.teams
+            ? (
+              <table className="TopList-table">
+                <thead>
+                  <tr>
+                    <td>Игрок</td>
+                    <td>за игру</td>
+                    <td>всего</td>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.showTopList()}
+                </tbody>
+              </table>
+            )
+            : <Loader />
+        }
+
       </div>
     );
   }

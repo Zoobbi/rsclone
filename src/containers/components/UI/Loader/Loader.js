@@ -1,8 +1,8 @@
 import React from 'react';
-import { LoaderSVG } from './LoaderSvg';
+import './Loader.scss';
 
 export const Loader = () => (
-  <div>
-    <LoaderSVG />
+  <div className="Loader">
+    <i className="fas fa-basketball-ball" />
   </div>
 );

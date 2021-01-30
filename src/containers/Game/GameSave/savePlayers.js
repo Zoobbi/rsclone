@@ -77,6 +77,6 @@ export const savePlayersFromGame = (players) => {
     statItem.stats.zones.center_three.total = player.stats.zones.center_three.isTouched
       ? player.stats.zones.center_three.total + player.stats.zones.center_three.global : player.stats.zones.center_three.global;
 
-    updatePlayer(player._id, statItem);
+    updatePlayer(player._id, statItem, true);
   });
 };

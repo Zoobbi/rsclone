@@ -1,5 +1,5 @@
 import {
-  INFO, LEAGUES, LEAGUE, TOKEN, TEAMS, TEAM, PLAYER, GAMES, GAME,
+  INFO, LEAGUES, LEAGUE, TOKEN, TEAMS, TEAM, PLAYER, GAMES, GAME, HISTORIES,
 } from './actionTypes';
 
 export function token(data) {
@@ -59,6 +59,12 @@ export function getGames(games) {
   };
 }
 
+export function getHistories(histories) {
+  return {
+    type: HISTORIES,
+    histories,
+  };
+}
 export function getCurrentGame(currentGame) {
   return {
     type: GAME,

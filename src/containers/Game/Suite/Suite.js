@@ -861,8 +861,8 @@ class Suite extends Component {
     try {
       createGame(gameData);
 
-      updateTeam(this.props.homeTeam[0]._id, teamDataHome);
-      updateTeam(this.props.visitTeam[0]._id, teamDataVisit);
+      updateTeam(this.props.homeTeam[0]._id, teamDataHome, true);
+      updateTeam(this.props.visitTeam[0]._id, teamDataVisit, true);
 
       savePlayersFromGame(gameData.players);
     } catch (e) {
@@ -876,8 +876,6 @@ class Suite extends Component {
     if (handler) {
       this.fullScreenEnter = handler;
     }
-    /* this.fullScreenExit = exit; */
-    // handle.enter
   }
 
   onChangeFullScreen = (isFullScreen) => this.setState({ isFullScreen });

@@ -6,5 +6,6 @@ export const TEAMS = 'TEAMS';
 export const TEAM = 'TEAM';
 export const PLAYER = 'PLAYER';
 export const GAMES = 'GAMES';
-export const GAME = 'GAMES';
+export const GAME = 'GAME';
+export const HISTORIES = 'HISTORIES';
 export const REMOVELEAGUE = 'REMOVELEAGUE';

@@ -1,32 +1,33 @@
 import axios from 'axios';
-import { LEAGUES } from '../actionTypes';
-import { getLeague } from '../actions';
+import { HISTORIES } from '../actionTypes';
+import { getHistories } from '../actions';
 // eslint-disable-next-line import/no-cycle
 import { store } from '../store';
 
 const initialState = {
-  leagues: null,
+  histories: [],
 };
 
-export default function getLeaguesReducer(state = initialState, action) {
+export default function getHistoriesReducer(state = initialState, action) {
   switch (action.type) {
-    case LEAGUES:
+    case HISTORIES:
       return {
-        leagues: action.leagues,
+        histories: action.histories,
       };
     default:
       return state;
   }
 }
 
-export const loadLeaguesFromDB = () => (dispatch) => {
+export const loadHistoriesFromDB = () => (dispatch) => {
   const PORT = 3001;
   const localhost = `http://localhost:${PORT}/api/`;
+
   try {
-    axios.get(`${localhost}leagues`,
+    axios.get(`${localhost}histories/`,
       { headers: { Authorization: ` ${store.getState().token.token}` } })
       .then((data) => {
-        dispatch(getLeague(data.data));
+        dispatch(getHistories(data.data));
       });
   } catch (e) {
     console.log(e);

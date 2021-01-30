@@ -23,7 +23,7 @@ import GameWrapper from './containers/Game/GameWrapper/GameWrapper';
 import StartPlayers from './containers/Game/StartPlayers/StartPlayers';
 import { NoPage } from './containers/components/UI/NoPage/NoPage';
 import GameHistory from './containers/GameHistory/GameHistory';
-// import GameHistoryToPrint from './containers/GameHistoryToPrint/GameHistoryToPrint';
+import History from './containers/History/History';
 
 class App extends Component {
   constructor() {
@@ -76,6 +76,7 @@ class App extends Component {
                          {getUser() && getUser().isAdmin ? <Route path="/game" exact component={GameWrapper} /> : null}
                          <Route path="/game/start" exact component={StartPlayers} />
                          <Route path="/games/detals" exact component={GameHistory} />
+                         <Route path="/histories" exact component={History} />
                          <Route path="/" exact component={HomeWrapper} />
                          <Route component={NoPage} />
                        </Switch>
