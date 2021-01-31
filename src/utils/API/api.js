@@ -22,8 +22,14 @@ export const register = async (data) => {
     localStorage.setItem('info', response.data.message);
     await store.dispatch(info(response.data.message, false));
   } catch (e) {
-    localStorage.setItem('info', e.response.data.message);
-    await store.dispatch(info(e.response.data.message, true));
+    if (e.response !== undefined) {
+      localStorage.setItem('info', e.response.data.message);
+      await store.dispatch(info(e.response.data.message, true));
+    } else {
+      localStorage.setItem('info', 'не удалось подкючиться');
+      await store.dispatch(info('не удалось подкючиться', true));
+      throw new Error('No DB connection');
+    }
   }
 };
 
@@ -40,8 +46,14 @@ export const login = async (data, onComplite) => {
 
     createHistory({ text: `пользователь ${data.email} залогинился`, user_email: data.email });
   } catch (e) {
-    localStorage.setItem('info', e.response.data.message);
-    await store.dispatch(info(e.response.data.message, true));
+    if (e.response !== undefined) {
+      localStorage.setItem('info', e.response.data.message);
+      await store.dispatch(info(e.response.data.message, true));
+    } else {
+      localStorage.setItem('info', 'не удалось подкючиться');
+      await store.dispatch(info('не удалось подкючиться', true));
+      throw new Error('No DB connection');
+    }
   }
 };
 

@@ -145,6 +145,8 @@ class Auth extends Component {
     );
   });
 
+  isFormValid = () => !this.state.isFormValid;
+
   changeAuthMode = () => {
     this.setState({
       formView: {
@@ -163,13 +165,13 @@ class Auth extends Component {
     if (this.state.formView.isLogin) {
       // eslint-disable-next-line no-shadow
       login(data, (token) => {
-        // eslint-disable-next-line react/prop-types
         if (this.props.updateToken !== null) {
           this.props.updateToken(token);
         }
 
         // eslint-disable-next-line react/prop-types
         this.props.history.push('/');
+        window.location.reload();
       });
 
       return null;
@@ -210,7 +212,7 @@ class Auth extends Component {
           <Button
             type="register"
             OnBtnclick={this.authAction}
-            disabled={!this.state.isFormValid}
+            disabled={this.isFormValid()}
           >
             {this.state.formView.isLogin ? 'Войти' : 'Регистрация'}
           </Button>
