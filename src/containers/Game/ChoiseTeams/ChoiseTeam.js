@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './ChoiseTeam.scss';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-// import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 import { loadTeamsFromDB } from '../../../utils/redux/reducers/teams';
 import { getCurrentLeague, getUser } from '../../../utils/Cookie/cookie';
@@ -46,7 +45,7 @@ class ChoiseTeam extends Component {
 
   choiceTeam = (isHomeTeam, teamId) => {
     const curTeam = this.props.teams.teams.filter((team) => team._id === teamId);
-    console.log(this.state.visitTeam && this.state.visitTeam.name !== curTeam[0].name);
+
     if (isHomeTeam) {
       if (!this.state.visitTeam) {
         this.setState({
@@ -65,6 +64,9 @@ class ChoiseTeam extends Component {
       this.setState({
         visitTeam: curTeam[0],
       });
+    } else {
+      localStorage.setItem('info', 'Выберите разные команды');
+      store.dispatch(info('Выберите разные команды', true));
     }
   }
 
@@ -75,12 +77,9 @@ class ChoiseTeam extends Component {
       <li
         aria-label="toggle menu"
         key={team._id + index}
-        // onClick={this.choiseTeam.bind(this, isHomeTeam, team._id)}
         onClick={() => { this.choiceTeam(isHomeTeam, team._id); }}
       >
-        {/* <Link to={`/teams/detals?team_id=${team._id}`}> */}
         {team.name}
-        {/* </Link> */}
         {
             getUser().isAdmin
               ? (
@@ -118,7 +117,7 @@ class ChoiseTeam extends Component {
                   <div className="ChoiseTeam-list-wrap">
                     <h4>Гости</h4>
                     <div className="guest">
-                      {this.state.visitTeam ? this.state.visitTeam.name : null}
+                      {this.state.visitTeam ? this.state.visitTeam.name : <i className="fas fa-window-minimize" />}
                     </div>
                     <ul className="ChoiseTeam-list">
                       {this.getTeamsList(false)}
@@ -127,7 +126,7 @@ class ChoiseTeam extends Component {
                   <div className="ChoiseTeam-list-wrap">
                     <h4>Хозяева</h4>
                     <div className="home">
-                      {this.state.homeTeam ? this.state.homeTeam.name : null}
+                      {this.state.homeTeam ? this.state.homeTeam.name : <i className="fas fa-window-minimize" />}
                     </div>
                     <ul className="ChoiseTeam-list">
                       {this.getTeamsList(true)}

@@ -20,7 +20,7 @@ class CreateLeague extends Component {
           value: '',
           type: 'text',
           label: 'Название лиги:',
-          errorMessage: 'от 2 до 15 букв или цифр',
+          errorMessage: 'от 2 до 15 латинских букв или цифр',
           valid: false,
           touched: false,
           validation: {
@@ -49,7 +49,7 @@ class CreateLeague extends Component {
 
     if (validation.nameRures) {
       // eslint-disable-next-line no-useless-escape
-      // isValid = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$/.test(value);
+      isValid = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$/.test(value);
     }
     return isValid;
   };

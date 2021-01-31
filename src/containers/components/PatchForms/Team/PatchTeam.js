@@ -45,7 +45,6 @@ class PatchTeam extends Component {
   componentDidMount() {
     const queries = parseAddresse(this.props);
     const teamId = this.setKeyIfExist(queries, 'team_id');
-    // this.getCurrentteam(teamId);
     this.props.fetchTeamFromDB(teamId);
   }
 
@@ -65,7 +64,6 @@ class PatchTeam extends Component {
 
   changeStateValue = () => {
     const teamName = this.props.currentTeam.currentTeam.name;
-    console.log(teamName);
     const { name } = this.state.formControls;
     name.value = teamName;
     this.setState({});

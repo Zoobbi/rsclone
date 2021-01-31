@@ -34,7 +34,7 @@ class Delete extends Component {
           tabIndex={0}
           aria-label="delete"
           onClick={this.handleOpen}
-          onKeyPress={console.log()}
+          onKeyPress={() => {}}
         >
           <img src="/delete.svg" alt="edit" />
         </div>

@@ -257,21 +257,34 @@ class GameHistoryToPrint extends Component {
         break;
     }
     return 0;
-  }
+  };
+
+  getQuartersScore = () => this.props.currentGame.currentGame.quarters.map((quarter) => (
+    <span className="quarter-score" key={quarter[1] + Math.random()}>
+      (&nbsp;
+      {quarter[0]}
+      &nbsp;:&nbsp;
+      {quarter[1]}
+      &nbsp;)
+    </span>
+  ));
 
   render() {
     return (
       <section className="GameHistoryToPrint">
         <div className="GameHistoryToPrint-content">
-          <h2>
-            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_visit_name : 'Гости ' }
-            &nbsp;
-            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_visit : '0' }
-            &nbsp;&nbsp;-&nbsp;&nbsp;
-            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_home : '0' }
-            &nbsp;
-            {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_home_name : 'Хозяева ' }
-          </h2>
+          <div className="header-line">
+            <h2>
+              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_visit_name : 'Гости ' }
+              &nbsp;
+              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_visit : '0' }
+              &nbsp;&nbsp;-&nbsp;&nbsp;
+              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_home : '0' }
+              &nbsp;
+              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_home_name : 'Хозяева ' }
+            </h2>
+            <div>{this.props.currentGame.currentGame ? this.getQuartersScore() : '-' }</div>
+          </div>
           <div className="GameHistoryToPrint-visit">
             <table>
               {this.getTableHeaders()}

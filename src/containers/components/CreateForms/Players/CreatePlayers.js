@@ -22,7 +22,7 @@ class CreatePlayer extends Component {
           value: '',
           type: 'text',
           label: 'Имя:',
-          errorMessage: 'только буквы',
+          errorMessage: 'Только буквы одного языка. Максимум 12 символов ',
           valid: false,
           touched: false,
           validation: {
@@ -34,7 +34,7 @@ class CreatePlayer extends Component {
           value: '',
           type: 'text',
           label: 'Фамилия:',
-          errorMessage: 'Только буквы одного языка',
+          errorMessage: 'Только буквы одного языка. Максимум 12 символов ',
           valid: false,
           touched: false,
           validation: {
@@ -88,7 +88,7 @@ class CreatePlayer extends Component {
       // eslint-disable-next-line no-useless-escape
       // isValid = /^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$/.test(value);
       // eslint-disable-next-line no-useless-escape
-      isValid = /^([а-яё\s]{1,15}|[a-z\s]{1,15})$/iu.test(value);
+      isValid = /^([а-яё\s]{2,12}|[a-z\s]{2,12})$/iu.test(value);
     }
 
     if (validation.isNumberValid) {
@@ -171,6 +171,7 @@ class CreatePlayer extends Component {
         label={control.label}
         shoudValidate={!!control.validation}
         errorMessage={control.errorMessage}
+        maxLength={12}
         onChange={(event) => this.onChangeHandler(event, controlName)}
       />
     );
@@ -190,7 +191,6 @@ class CreatePlayer extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div className="CreateTeam-wrapper">
         <form className="CreateTeam">
@@ -200,7 +200,7 @@ class CreatePlayer extends Component {
             aria-label="upload-file"
             className="CreateTeam-logo"
             onClick={() => this.realInput.click()}
-            onKeyPress={console.log('key')}
+            onKeyPress={() => {}}
           >
             <img src="image-template.svg" alt="load" />
             <span>{this.fileLoadMessage()}</span>

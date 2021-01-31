@@ -190,53 +190,65 @@ class Suite extends Component {
         isShiftMode: true,
       });
     }
+
     if (e.keyCode === 32) {
       e.preventDefault();
       this.setState({
         isTimerPlay: !this.state.isTimerPlay,
       });
+
       if (this.state.isTimerPlay) {
         this.startTimerFunc();
       } else {
         this.stopTimerFunc();
       }
     }
+
     if (e.keyCode === 49) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameVisit[0]);
     }
+
     if (e.keyCode === 50) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameVisit[1]);
     }
+
     if (e.keyCode === 51) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameVisit[2]);
     }
+
     if (e.keyCode === 52) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameVisit[3]);
     }
+
     if (e.keyCode === 53) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameVisit[4]);
     }
+
     if (e.keyCode === 54) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameHome[0]);
     }
+
     if (e.keyCode === 55) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameHome[1]);
     }
+
     if (e.keyCode === 56) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameHome[2]);
     }
+
     if (e.keyCode === 57) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameHome[3]);
     }
+
     if (e.keyCode === 48) {
       e.preventDefault();
       this.selectedPlayerHandler(this.state.inGameHome[4]);
@@ -245,22 +257,27 @@ class Suite extends Component {
       e.preventDefault();
       this.actionHandler('FTMade', 'штрафной забит');
     }
+
     if (e.keyCode === 87) {
       e.preventDefault();
       this.actionHandler('FTmiss', 'штрафной не забит');
     }
+
     if (e.keyCode === 69) {
       e.preventDefault();
       this.actionHandler('OR', 'подбор в нападении');
     }
+
     if (e.keyCode === 82) {
       e.preventDefault();
       this.actionHandler('DR', 'подбор в защите');
     }
+
     if (e.keyCode === 84) {
       e.preventDefault();
       this.actionHandler('AS', 'передача');
     }
+
     if (e.keyCode === 89) {
       e.preventDefault();
       this.actionHandler('ST', 'перехват');
@@ -269,14 +286,17 @@ class Suite extends Component {
       e.preventDefault();
       this.actionHandler('BLK', 'блокшот');
     }
+
     if (e.keyCode === 73) {
       e.preventDefault();
       this.actionHandler('TO', 'потеря');
     }
+
     if (e.keyCode === 79) {
       e.preventDefault();
       this.actionHandler('PFG', 'фол получен');
     }
+
     if (e.keyCode === 80) {
       e.preventDefault();
       this.actionHandler('PFT', 'фол заработан');
@@ -701,7 +721,6 @@ class Suite extends Component {
   actionHandler = (actionKey, actionText) => {
     if (this.isPlayerSelected()) {
       const activePlayer = this.getActivePlayer();
-      console.log(activePlayer);
       this.getInfoMessage(`${activePlayer.full}: ${actionText}`);
 
       switch (actionKey) {
@@ -872,7 +891,6 @@ class Suite extends Component {
   }
 
   fullscreenHandler = (handler) => {
-    console.log(handler);
     if (handler) {
       this.fullScreenEnter = handler;
     }

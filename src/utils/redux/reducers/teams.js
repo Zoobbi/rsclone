@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { TEAMS } from '../actionTypes';
-import { getTeams } from '../actions';
+import { getTeams, info } from '../actions';
 // eslint-disable-next-line import/no-cycle
 import { store } from '../store';
+import { config } from '../../../config/config';
 
 const initialState = {
   teams: [],
@@ -20,17 +21,15 @@ export default function getTeamsReducer(state = initialState, action) {
 }
 
 export const loadTeamsFromDB = (leagueId) => (dispatch) => {
-  const PORT = 3001;
-  const localhost = `http://localhost:${PORT}/api/`;
-
   try {
-    axios.get(`${localhost}teams/all/${leagueId}`,
+    axios.get(`${config.HOST}teams/all/${leagueId}`,
       { headers: { Authorization: ` ${store.getState().token.token}` } })
       .then((data) => {
-        console.log(data);
         dispatch(getTeams(data.data));
       });
   } catch (e) {
-    console.log(e);
+    localStorage.setItem('info', e.response.data.message);
+    store.dispatch(info(e.response.data.message, true));
+    throw new Error('failed to load teams');
   }
 };

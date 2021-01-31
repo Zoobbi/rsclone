@@ -8,6 +8,13 @@
   align-items: center;
   color: #000;
 }
+.GameHistoryToPrint .header-line {
+  margin-bottom: 30px;
+  text-align: center;
+}
+.GameHistoryToPrint .quarter-score {
+  padding: 5px;
+}
 .GameHistoryToPrint-content {
   padding: 30px;
   overflow-x: auto;

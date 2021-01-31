@@ -22,7 +22,7 @@ class CreateTeam extends Component {
           value: '',
           type: 'text',
           label: 'Название команды:',
-          errorMessage: 'от 2 до 15 букв или цифр',
+          errorMessage: 'от 2 до 15 латинских букв или цифр',
           valid: false,
           touched: false,
           validation: {
@@ -166,7 +166,7 @@ class CreateTeam extends Component {
               aria-label="upload-file"
               className="CreateTeam-logo"
               onClick={() => this.realInput.click()}
-              onKeyPress={console.log('key')}
+              onKeyPress={() => {}}
             >
               <img src="image-template.svg" alt="load" />
               <span>{this.fileLoadMessage()}</span>

@@ -17,17 +17,37 @@ class History extends Component {
     this.props.fetchHistoriesFromDB();
   }
 
-  getHistory = () => this.props.histories.histories.map((historyItem) => (
+  /*  getHistory = () => this.props.histories.histories.map((historyItem) => (
     <li key={historyItem._id}>
       <span>
         <strong>
           {historyItem.user_email}
           &nbsp;&nbsp;
         </strong>
+        {historyItem.date.getFullYear()}
       </span>
       {historyItem.text}
     </li>
-  ))
+  )) */
+
+  getHistory = () => this.props.histories.histories.map((historyItem) => {
+    const date = new Date(historyItem.date);
+    const historyDate = `${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`;
+
+    return (
+      <li key={historyItem._id}>
+        <span>
+          <strong>
+            {historyItem.user_email}
+          &nbsp;&nbsp;
+          </strong>
+          {historyDate}
+          &nbsp;&nbsp;
+        </span>
+        {historyItem.text}
+      </li>
+    );
+  })
 
   render() {
     return (

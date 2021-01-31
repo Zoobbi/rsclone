@@ -9,16 +9,12 @@ class Playground extends React.Component {
   }
   componentDidUpdate() {
     if (this.isPlayer()) {
-      console.log('HERE');
         this.zones = this.props.player.stats.zones;
-        console.log(this.zones)
     }
   }
   isPlayer = () => !!this.props.player;
 
   render() {
-    console.log(this.props.player);
-    console.log(this.isPlayer());
   return (
       <div style={{ display: 'flex', justifyContent: 'center' }}>
         <svg

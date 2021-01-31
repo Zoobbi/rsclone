@@ -9,7 +9,7 @@ const Edit = (props) => (
     role="button"
     tabIndex={0}
     aria-label="edit"
-    onKeyPress={console.log()}
+    onKeyPress={() => {}}
   >
     <Link
       to={props.path}

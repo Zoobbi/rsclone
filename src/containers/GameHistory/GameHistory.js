@@ -8,6 +8,7 @@ import { parseAddresse } from '../../utils/makeAdress/makeAdress';
 import { loadGameFromDB } from '../../utils/redux/reducers/currentGame';
 import getPercent from '../../utils/getPercent/getPercent';
 import ComponentToPrint from '../GameHistoryToPrint/ComponentToPrint';
+import { Loader } from '../components/UI/Loader/Loader';
 
 class GameHistory extends Component {
   constructor(props) {
@@ -279,28 +280,29 @@ class GameHistory extends Component {
       {quarter[1]}
       &nbsp;)
     </span>
-  ))
+  ));
 
   render() {
-    console.log(this.props.currentGame.currentGame);
     return (
       <section className="GameHistory">
         <div className="GameHistory-content">
-          <div className="">
-            <ReactToPrint
-              trigger={() => <i className="print fas fa-print" />}
-              content={() => this.componentRef}
-            />
-          </div>
+          <ReactToPrint
+            trigger={() => <i id="print" className=" fas fa-print" />}
+            content={() => this.componentRef}
+          />
           <div className="header-line">
             <h2>
-              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_visit_name : 'Гости ' }
-              &nbsp;
-              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_visit : '0' }
-              &nbsp;&nbsp;-&nbsp;&nbsp;
-              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_home : '0' }
-              &nbsp;
-              {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_home_name : 'Хозяева ' }
+              <span>
+                {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_visit_name : 'Гости ' }
+                &nbsp;
+                {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_visit : '0' }
+              </span>
+              <span> - </span>
+              <span>
+                {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.score_home : '0' }
+                &nbsp;
+                {this.props.currentGame.currentGame ? this.props.currentGame.currentGame.team_home_name : 'Хозяева ' }
+              </span>
             </h2>
             <div>{this.props.currentGame.currentGame ? this.getQuartersScore() : '-' }</div>
           </div>
@@ -309,29 +311,29 @@ class GameHistory extends Component {
             <table>
               {this.getTableHeaders()}
               <tbody>
-                {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_visit) : null }
+                {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_visit) : <Loader /> }
                 {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_visit) : null }
               </tbody>
             </table>
           </div>
-          <div className="GameHistory-home" />
-          <table>
-            {this.getTableHeaders()}
-            <tbody>
-              {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_home) : null }
-              {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_home) : null }
-            </tbody>
-          </table>
-        </div>
-        <div style={{ display: ' none ' }}>
-          <ComponentToPrint
-            ref={(el) => {
-              this.componentRef = el;
-              // eslint-disable-next-line no-return-assign
-              return this.componentRef;
-            }}
-            gameId={this.state.game_id ? this.state.game_id : undefined}
-          />
+          <div className="GameHistory-home">
+            <table>
+              {this.getTableHeaders()}
+              <tbody>
+                {this.props.currentGame.currentGame ? this.getTeamStats(this.props.currentGame.currentGame.team_home) : <Loader /> }
+                {this.props.currentGame.currentGame ? this.showTeamStatsLine(this.props.currentGame.currentGame.team_home) : null }
+              </tbody>
+            </table>
+          </div>
+          <div style={{ display: ' none ' }}>
+            <ComponentToPrint
+              ref={(el) => {
+                this.componentRef = el;
+                // eslint-disable-next-line no-return-assign
+                return this.componentRef;
+              }}
+            />
+          </div>
         </div>
       </section>
     );

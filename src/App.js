@@ -5,7 +5,6 @@ import Auth from './containers/Auth/Auth';
 import InfoModal from './containers/components/UI/InfoModal/InfoModal';
 import Layout from './hoc/Layout/Layout';
 import HomeWrapper from './containers/Home/HomeWrapper/HomeWrapper';
-
 import './App.scss';
 import { token } from './utils/redux/actions';
 import CreateLeague from './containers/components/CreateForms/Leagues/CreateLeague';

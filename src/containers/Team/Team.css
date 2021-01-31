@@ -39,6 +39,13 @@
   border: 2px solid blanchedalmond;
   background-color: rgba(0, 0, 0, 0.7);
   border-radius: 10px;
+  table-layout: fixed;
+  display: block;
+  max-width: -moz-fit-content;
+  max-width: fit-content;
+  margin: 0 auto;
+  overflow-x: auto;
+  white-space: nowrap;
 }
 .Team-players-table thead td {
   cursor: pointer;

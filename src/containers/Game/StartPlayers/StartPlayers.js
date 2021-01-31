@@ -53,7 +53,6 @@ class StartPlayers extends Component {
       const { visitStart } = this.state;
       const [...players] = this.state.visitTeam[0].players.filter((player) => player._id === playerId);
       visitStart.push(players[0]);
-      console.log(visitStart);
       this.setState({
         visitStart,
       });
@@ -88,7 +87,7 @@ class StartPlayers extends Component {
               role="button"
               tabIndex={0}
               aria-label="toggle menu"
-              onKeyPress={console.log(1)}
+              onKeyPress={() => {}}
               onClick={this.goTostartLine.bind(this, true, player._id)}
             >
               {
@@ -107,7 +106,7 @@ class StartPlayers extends Component {
             role="button"
             tabIndex={0}
             aria-label="toggle menu"
-            onKeyPress={console.log(1)}
+            onKeyPress={() => {}}
             onClick={this.goTostartLine.bind(this, false, player._id)}
           >
             {
@@ -129,7 +128,7 @@ class StartPlayers extends Component {
             role="button"
             tabIndex={0}
             aria-label="toggle menu"
-            onKeyPress={console.log(1)}
+            onKeyPress={() => {}}
             onClick={this.goToBench.bind(this, true, player._id)}
           >
             {player.name.full}
@@ -143,7 +142,7 @@ class StartPlayers extends Component {
           role="button"
           tabIndex={0}
           aria-label="toggle menu"
-          onKeyPress={console.log(1)}
+          onKeyPress={() => {}}
           onClick={this.goToBench.bind(this, false, player._id)}
         >
           {player.name.full}

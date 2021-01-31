@@ -3,8 +3,12 @@
     color: #fff;
     transform: rotate(0deg);
   }
-  to {
+  50% {
     color: orange;
+    transform: rotate(180deg);
+  }
+  to {
+    color: #fff;
     transform: rotate(360deg);
   }
 }

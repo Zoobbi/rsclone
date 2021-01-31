@@ -93,8 +93,6 @@ class PatchPlayer extends Component {
     const { lastName } = this.state.formControls;
     const { number } = this.state.formControls;
 
-    console.log(player);
-
     name.value = player.name.first_name;
     lastName.value = player.name.last_name;
     number.value = player.number;

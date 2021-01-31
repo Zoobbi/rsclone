@@ -7,9 +7,8 @@ class ComponentToPrint extends Component {
     return (
       <GameHistoryToPrint
         ref={(el) => {
-          console.log(el);
-          // eslint-disable-next-line no-return-assign
-          return this.componentRef = el;
+          this.component = el;
+          return this.componentRef;
         }}
         gameId={this.props.gameId ? this.props.gameId : undefined}
       />
