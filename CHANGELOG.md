@@ -1,0 +1,41 @@
+- feat: add host adress
+- fix: adaptive bugs
+- feat: add history & loader
+- add fullscreen & player image list
+- feat: add game print
+- feat: add game to DB logic
+- add infoline & timer
+- feat: add timer font
+- feat: add subs players
+- feat: add 404 & game
+- feat: add backdrop
+- feat: add logo & RS logo
+- feat: add 404 template
+- feat: add input component
+- feat: add info modal panel
+- feat: add UI delete & edit buttons
+- feat: add UI button
+- feat: add path form components
+- feat: add navigation component & logic
+- feat: add player img from auth
+- feat: add create forms componetns
+- feat: add team component
+- feat: add player component
+- feat: add current league component
+- feat: add cur.league game history
+- feat: add cur. league top list
+- feat: add cur. league team list
+- feat: add Home page & choice league
+- feat: add user-profile component
+- feat: add header component
+- feat: add auth component & logic
+- feat: add hoc layout component
+- feat: create queries DB
+- feat: create cookie
+- feat: add adress line parser
+- feat: add redux
+- feat: add route & app dependenses
+- feat: add avatars
+- feat: add image & manifest
+- init: rs_clone
+- Initial commit
