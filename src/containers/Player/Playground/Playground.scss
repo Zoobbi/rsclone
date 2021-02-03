@@ -1,0 +1,38 @@
+.sector {
+  transition: .3s;
+  opacity: 0;
+
+}
+.Playground-font {
+  font-family: ArialMT, serif;
+  font-size: 20px;
+  transition: .5s;
+  &:hover {
+    background: black;
+    color: red;
+    font-size: 30px;
+  }
+}
+.Playground {
+
+}
+@media (min-width: 320px) and (max-width: 339.98px) {
+  .Playground {
+    width: 300px;
+  }
+}
+@media (min-width: 340px) and (max-width: 399.98px) {
+  .Playground {
+    width: 320px;
+  }
+}
+@media (min-width: 400px) and (max-width: 449.98px) {
+  .Playground {
+    width: 350px;
+  }
+}
+@media (min-width: 450px) and (max-width: 500px) {
+  .Playground {
+    width: 420px;
+  }
+}

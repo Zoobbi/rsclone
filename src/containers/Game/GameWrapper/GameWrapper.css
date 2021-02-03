@@ -1,0 +1,12 @@
+.GameWrapper {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  width: 100%;
+  height: 100%;
+  background-color: #11998e;
+  background-image: linear-gradient(180deg, #11998e 0%, #38ef7d 100%);
+  padding: 0 8%;
+}
+
+/*# sourceMappingURL=GameWrapper.css.map */

@@ -1,0 +1,12 @@
+.edit-btn {
+  width: 15px;
+  height: 15px;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.edit-btn img {
+  width: 100%;
+  height: 100%;
+}
+
+/*# sourceMappingURL=Edit.css.map */

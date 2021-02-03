@@ -1,0 +1,21 @@
+.Timer {
+  &-time {
+    display: flex;
+    input {
+      background-color: rosybrown;
+      border: none;
+      outline: none;
+      width: 80px;
+      font-size: 2rem;
+      height: 80px;
+      display: flex;
+      justify-content: center;
+      padding-left: 15px;
+      align-items: center;
+    }
+  }
+  &-content {
+    display: flex;
+    background-color: #fff;
+  }
+}

@@ -1,0 +1,23 @@
+.UserInfo {
+  display: flex;
+  color: white;
+  &-avatar {
+    width: 40px;
+    height: 40px;
+    margin-left: 30px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: .5s;
+    &:hover{
+      border-color: white;
+      background-color: rgba(255,255,255, 0.5);
+    }
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
