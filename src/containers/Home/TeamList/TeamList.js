@@ -53,7 +53,7 @@ class TeamList extends Component {
                   />
                 </div>
               )
-              : <li>команды не найдены</li>
+              : null
           }
         </li>
       ));

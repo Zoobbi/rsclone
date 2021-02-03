@@ -36,7 +36,7 @@ export const register = async (data) => {
 export const login = async (data, onComplite) => {
   try {
     const response = await axios.post(`${HOST}auth/login`, data);
-
+    console.log(data.email);
     await store.dispatch(token(response.data.token));
     localStorage.setItem('info', 'Вход выполнен');
     store.dispatch(info('Вход выполнен', false));
@@ -44,7 +44,7 @@ export const login = async (data, onComplite) => {
     await saveUser(JSON.stringify(response.data.user));
     onComplite(response.data.token);
 
-    createHistory({ text: `пользователь ${data.email} залогинился`, user_email: data.email });
+    await createHistory({ text: `пользователь ${data.email} залогинился`, user_email: data.email });
   } catch (e) {
     if (e.response !== undefined) {
       localStorage.setItem('info', e.response.data.message);
@@ -63,7 +63,7 @@ export const createLeague = async (data) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `cоздана лига ${data.name}`, user_email: getUser().email });
+    await createHistory({ text: `cоздана лига ${data.name}`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -76,7 +76,7 @@ export const createPlayer = async (data) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `cоздан игрок ${data.last_name} в команду ${data.team}`, user_email: getUser().email });
+    await createHistory({ text: `cоздан игрок ${data.last_name} в команду ${data.team}`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -89,7 +89,7 @@ export const createTeam = async (data) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `cоздана команда ${data.name} в лигу ${data.league}`, user_email: getUser().email });
+    await createHistory({ text: `cоздана команда ${data.name} в лигу ${data.league}`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -102,7 +102,7 @@ export const createGame = async (data) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `записана игра команд ${data.team_home} и ${data.team_visit}  в лиге ${data.league}`, user_email: getUser().email });
+    await createHistory({ text: `записана игра команд ${data.team_home} и ${data.team_visit}  в лиге ${data.league}`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -115,7 +115,7 @@ export const removeLeague = async (id) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `удалена лига ${id}`, user_email: getUser().email });
+    await createHistory({ text: `удалена лига ${id}`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -128,7 +128,7 @@ export const removeTeam = async (id) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `удалена команда ${id}`, user_email: getUser().email });
+    await createHistory({ text: `удалена команда ${id}`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -141,7 +141,7 @@ export const removeGame = async (id) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `удалена игра ${id}`, user_email: getUser().email });
+    await createHistory({ text: `удалена игра ${id}`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -154,7 +154,7 @@ export const removePlayer = async (id) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `удален игрок ${id}`, user_email: getUser().email });
+    await createHistory({ text: `удален игрок ${id}`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -167,7 +167,7 @@ export const updateLeague = async (id, data) => {
 
     localStorage.setItem('info', response.data.message);
     store.dispatch(info(response.data.message, false));
-    createHistory({ text: `изменена лига ${id} - ${data.name};`, user_email: getUser().email });
+    await createHistory({ text: `изменена лига ${id} - ${data.name};`, user_email: getUser().email });
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
     store.dispatch(info(e.response.data.message, false));
@@ -182,7 +182,7 @@ export const updateTeam = async (id, data, isGame = false) => {
     store.dispatch(info(response.data.message, false));
 
     if (!isGame) {
-      createHistory({ text: `изменена команда ${id}`, user_email: getUser().email });
+      await createHistory({ text: `изменена команда ${id}`, user_email: getUser().email });
     }
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);
@@ -198,7 +198,7 @@ export const updatePlayer = async (id, data, isGame = false) => {
     store.dispatch(info(response.data.message, false));
 
     if (!isGame) {
-      createHistory({ text: `изменён игрок ${id}; ${data.last_name}`, user_email: getUser().email });
+      await createHistory({ text: `изменён игрок ${id}; ${data.last_name}`, user_email: getUser().email });
     }
   } catch (e) {
     localStorage.setItem('info', e.response.data.message);

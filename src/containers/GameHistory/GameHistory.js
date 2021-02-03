@@ -45,9 +45,9 @@ class GameHistory extends Component {
             {player.start ? <i className="fas fa-basketball-ball" /> : null}
           </Link>
         </td>
-        <td className="text-center">
+        {/* <td className="text-center">
           {player.time_in_game}
-        </td>
+        </td> */}
         <td className="text-center nowrap">
           {player.stats.total_shots.made}
           &nbsp; / &nbsp;
@@ -119,7 +119,7 @@ class GameHistory extends Component {
       <tr>
         <td rowSpan="2">№</td>
         <td rowSpan="2" className="name">Имя</td>
-        <td rowSpan="2">Время</td>
+        {/* <td rowSpan="2">Время</td> */}
         <td colSpan="2">С игры</td>
         <td colSpan="2">2</td>
         <td colSpan="2">3</td>
